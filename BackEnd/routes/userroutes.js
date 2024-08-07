@@ -12,21 +12,12 @@ router.post('/create', userController.createUser);
 //login the user
 router.post('/login', userController.loginUser);
 
-// //update the user
-// router.put('/updateuser', authGuard, userController.updateUser);
-
 // Get user profile
 router.get("/getuser", authGuard, userController.getSingleUser);
 
-//update the password
-router.post('/changepassword', authGuard, userController.updatePassword);
+// Update password
+router.put("/change-password", authGuard, userController.updatePassword);
 
-// //forget password
-// //send the mail
-// router.post('/resetpassword', userController.resetPassword);
-
-// //check the code
-// router.post('/resetcode', userController.verifyResetCode);
 
 
 router.post("/uploadImage", upload, userController.uploadImage);

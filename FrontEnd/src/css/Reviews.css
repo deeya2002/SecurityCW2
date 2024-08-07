@@ -1,0 +1,40 @@
+
+.review-section {
+  padding: 20px;
+  align-items: center;
+}
+
+.review-container {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.star-rating {
+  margin-top: 10px;
+}
+
+.star {
+  color: #ffc107;
+  /* Star color */
+  font-size: 1.2rem;
+  margin-right: 3px;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  /* Delete button color */
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin-top: 10px;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+  /* Hover color */
+}

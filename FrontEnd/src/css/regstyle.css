@@ -1,0 +1,121 @@
+body {
+    background-size: cover;
+}
+
+.register-background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 120vh;
+    /* Adjust based on your needs */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container {
+    background: white;
+    /* Optional: to make sure the form is readable */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+div.main {
+    padding: 70px 0 30px;
+    background-image: url('../../public/assets/images/7331b32084a3f03b9545e4f3a7083de8.jpg');
+    height: 690px;
+
+}
+
+div.regs {
+    width: 50%;
+    height: 535px;
+    background: #fff;
+    margin: 0 auto;
+    border: 1px solid gainsboro;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 30px;
+}
+
+div.regs .left {
+    float: left;
+    background: url('../../public/assets/images/28142325.png');
+    width: 45%;
+    height: 535px;
+    background-size: cover;
+    box-sizing: border-box;
+    border-radius: 30px;
+}
+
+div.regs .right {
+    float: right;
+    width: 55%;
+    height: 520px;
+    box-sizing: border-box;
+
+}
+
+div.regbox {
+    width: 100%;
+    padding: 40px 70px;
+    box-sizing: border-box;
+    height: 520px;
+    background: #fff;
+    border-radius: 30px;
+}
+
+div.regbox h1 {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size: x-large;
+
+}
+
+form#rg {
+    margin-left: 0px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+label {
+    font-family: sans-serif;
+    font-size: 14px;
+}
+
+input#ba {
+    width: 270px;
+    border: 1px solid #1f1f29;
+    border-radius: 3px;
+    outline: 0;
+    padding: 6px;
+    background-color: #e4ecec;
+    box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.3);
+}
+
+button#sub {
+    text-align: center;
+    width: 150px;
+    padding: 8px;
+    font-size: 15px;
+    font-family: sans-serif;
+    font-weight: 500;
+    background-color: #FF8C8C;
+    border: 0, 4px solid #e5e1e1;
+    cursor: pointer;
+    border-radius: 25px;
+    color: #101014;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-top: 5px;
+
+}
+
+label,
+h1 {
+    text-shadow: 0px 0px 0px #101014;
+}

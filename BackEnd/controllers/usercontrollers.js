@@ -219,7 +219,7 @@ const loginUser = async (req, res) => {
             username: user.username,
             email: user.email
         };
-
+ 
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1d" });
 
         // Response
@@ -307,170 +307,81 @@ const updateUser = async (req, res) => {
 
 }
 
-// //send email to the user
-// const resetPassword = async (req, res) => {
-//     const UserData = req.body;
-//     console.log(UserData)
-//     const user = await Users.findOne({ email: UserData?.email });
-//     const OTP = resetCode;
-//     console.log(user.id);
-//     console.log(OTP);
-//     await ResetCode.findOneAndUpdate({
-//         userId: user.id
-//     }, {
-//         resetCode: OTP
-//     }, { upsert: true })
-//     console.log(user);
-//     const MailConfig = mailConfig();
-
-//     const mailOptions = {
-//         from: 'Food Rush',
-//         to: UserData?.email,
-//         subject: 'Password Reset Code',
-//         text: `Your password reset code is: ${OTP}`
-//     };
-
-//     try {
-//         await MailConfig.sendMail(mailOptions);
-//         return res.json({
-//             success: true,
-//             message: "Reset code email sent successfully!"
-//         })
-//     } catch (error) {
-//         console.log(error)
-//         return res.json({
-//             success: false,
-//             message: 'Error sending reset code email:' + error.message,
-//         })
-//     }
-// }
-
-// //verify the code
-// const verifyResetCode = async (req, res) => {
-
-//     const { resetCode, email } = req.body;
-//     try {
-//         const user = await Users.findOne({ email });
-//         if (!user) {
-//             return res.json({
-//                 success: false,
-//                 message: "User not found with the provided email."
-//             });
-//         } else {
-//             const savedResetCode = await ResetCode.findOne({ userId: user._id });
-//             if (!savedResetCode || savedResetCode.resetCode != resetCode) {
-//                 return res.json({
-//                     success: false,
-//                     message: "Invalid reset code."
-//                 });
-//             } else {
-//                 return res.json({
-//                     success: true,
-//                     message: "Reset code verified successfully."
-//                 });
-//             }
-//         }
-//     } catch (error) {
-//         console.error("Error in verifyResetCode:", error);
-//         return res.json({
-//             success: false,
-//             message: 'Server Error: ' + error.message,
-//         });
-//     }
-// };
-
-
-// //update password
-// const updatePassword = async (req, res) => {
-//     const { email, password } = req.body;
-
-//     try {
-//         // Update the user's password
-//         const randomSalt = await bcrypt.genSalt(10);
-//         const encryptedPassword = await bcrypt.hash(password, randomSalt);
-
-//         await Users.findOneAndUpdate({ email }, { password: encryptedPassword });
-
-//         return res.json({
-//             success: true,
-//             message: "Password reset successfully."
-//         });
-
-//     } catch (error) {
-//         console.log(error);
-//         return res.json({
-//             success: false,
-//             message: 'Server Error: ' + error.message,
-//         });
-//     }
-// };
-
+//update password
 const updatePassword = async (req, res, next) => {
     const { currentPassword, newPassword, confirmPassword } = req.body;
+    console.log('Current Password:' , currentPassword)
+    const userId = req.user.id;
+  
     try {
-        const userId = req.user.id;
-        const user = await User.findById(userId);
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
+      // Find the user by ID
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      console.log('User Password :' , user.password)
+     
+          // Compare the current password with the stored hashed password
+          if (!currentPassword || !user.password) {
+            return res.status(400).json({ error: "Current password is required" });
         }
-
-        // Compare the current password with the stored hashed password
-        const passwordMatch = await bcrypt.compare(currentPassword, user.password);
-        if (!passwordMatch) {
-            return res.status(400).json({ error: "Incorrect current password" });
-        }
-
-        // Check if the new password and confirm password match
-        if (newPassword !== confirmPassword) {
-            return res
-                .status(400)
-                .json({ error: "New password and confirm password do not match" });
-        }
-
-        // Check if the new password is different from the current password
-        if (currentPassword === newPassword) {
-            return res.status(400).json({
-                error: "New password must be different from the current password",
-            });
-        }
-
-        // Check if the new password is in the password history
-        const isPasswordInHistory = await Promise.all(
-            user.passwordHistory.map(async (oldPassword) => {
-                return await bcrypt.compare(newPassword, oldPassword);
-            })
-        );
-
-        if (isPasswordInHistory.includes(true)) {
-            return res.status(400).json({
-                error: "New password cannot be one of the recent passwords",
-            });
-        }
-
-        // Hash the new password
-        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-        // Update the user's password and set the new password change date
-        user.password = hashedNewPassword;
-        user.passwordChangeDate = new Date();
-
-        // Save the updated user
-        await user.save();
-
-        // Update the password history
-        user.passwordHistory.push(hashedNewPassword);
-        // Trim the password history to a specific depth (e.g., last 5 passwords)
-        const passwordHistoryDepth = 5;
-        user.passwordHistory = user.passwordHistory.slice(-passwordHistoryDepth);
-
-        await user.save();
-
-        res.status(204).json({ message: "Password updated successfully" });
+        
+      // Compare the current password with the stored hashed password
+      const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!passwordMatch) {
+        return res.status(400).json({ error: "Incorrect current password" });
+      }
+  
+      // Check if the new password and confirm password match
+      if (newPassword !== confirmPassword) {
+        return res
+          .status(400)
+          .json({ error: "New password and confirm password does not match" });
+      }
+  
+      // Check if the new password is different from the current password
+      if (currentPassword === newPassword) {
+        return res.status(400).json({
+          error: "New password must be different from the current",
+        });
+      }
+  
+      // Check if the new password is in the password history
+      const isPasswordInHistory = await Promise.all(
+        user.passwordHistory.map(async (oldPassword) => {
+          return await bcrypt.compare(newPassword, oldPassword);
+        })
+      );
+  
+      if (isPasswordInHistory.includes(true)) {
+        return res.status(400).json({
+          error: "New password cannot be one of the recent.",
+        });
+      }
+  
+      // Hash the new password
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+  
+      // Update the user's password and set the new password change date
+      user.password = hashedNewPassword;
+      user.passwordChangeDate = new Date();
+  
+      // Save the updated user
+      await user.save();
+  
+      // Update the password history
+      user.passwordHistory.push(hashedNewPassword);
+      // Trim the password history to a specific depth (e.g., last 5 passwords)
+      const passwordHistoryDepth = 5;
+      user.passwordHistory = user.passwordHistory.slice(-passwordHistoryDepth);
+  
+      await user.save();
+  
+      res.status(204).json({ message: "Password updated successfully" });
     } catch (error) {
-        /* istanbul ignore next */
-        next(error);
+      next(error);
     }
-};
+  };
 
 const uploadImage = asyncHandler(async (req, res, next) => {
     if (!req.file) {

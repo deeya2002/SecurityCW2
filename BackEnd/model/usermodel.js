@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const Schema = mongoose.Schema;
+const bcrypt = require('bcryptjs');
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     firstName: {
         type: String,
         required: true,
@@ -45,27 +46,27 @@ const userSchema = new mongoose.Schema({
     failedLoginAttempts: {
         type: Number,
         default: 0,
-      },
-      accountLocked: {
+    },
+    accountLocked: {
         type: Boolean,
         default: false,
-      },
-      lastFailedLoginAttempt: {
+    },
+    lastFailedLoginAttempt: {
         type: Date,
         default: null,
-      },
-      resetPasswordToken: {
+    },
+    resetPasswordToken: {
         type: String,
         default: null,
-      },
-      resetPasswordExpires: {
+    },
+    resetPasswordExpires: {
         type: Date,
         default: null,
-      },
-      passwordHistory: [
+    },
+    passwordHistory: [
         {
-          type: String,
-          required: true,
+            type: String,
+            required: true,
         },
     ],
     userType: {
@@ -73,34 +74,36 @@ const userSchema = new mongoose.Schema({
         enum: ["admin", "user"],
         default: "user",
         required: true,
-      },
+    },
 });
 
-  // Sign JWT and return
-  userSchema.methods.getSignedJwtToken = function () {
+// Sign JWT and return
+userSchema.methods.getSignedJwtToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRE,
+    });
 };
 
 // Match user entered password to hashed password in database
 userSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+    return await bcrypt.compare(enteredPassword, this.password);
 };
 
 // Generate and hash password token
 userSchema.methods.getResetPasswordToken = function () {
-  // Generate token
-  const resetToken = crypto.randomBytes(20).toString("hex");
+    // Generate token
+    const resetToken = crypto.randomBytes(20).toString("hex");
 
-  // Hash token and set to resetPasswordToken field
-  this.resetPasswordToken = crypto
-    .createHash("diy234")
-    .update(resetToken)
-    .digest("hex");
+    // Hash token and set to resetPasswordToken field
+    this.resetPasswordToken = crypto
+        .createHash("diy234")
+        .update(resetToken)
+        .digest("hex");
 
-  // Set expire
-  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+    // Set expire
+    this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
-  return resetToken;
+    return resetToken;
 };
 
-const User = mongoose.model('users', userSchema);
-module.exports = User;
+module.exports = mongoose.model('users', userSchema);
