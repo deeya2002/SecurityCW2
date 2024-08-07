@@ -60,6 +60,7 @@ const navigate = useNavigate();
           >
             Add to cart
           </button>
+
         </div>
       </div>
     </div>

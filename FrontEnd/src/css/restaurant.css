@@ -1,131 +1,132 @@
 body {
-    font-family: "Arial", sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  header {
-    background-color: #f8f9fa;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .header h1 {
-    color: #333;
-    font-size: 2rem;
-  }
-  
-  .header p {
-    color: #555;
-    font-size: 1.2rem;
-  }
-  
-  .featured-items {
-    background-color: #fff;
-    padding: 20px;
-  }
-  
-  .item-list {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  
-  .item-card {
-    width: 350px;
-    height: 450px;
-    margin-bottom: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Align content at the top */
-    align-items: center; /* Center horizontally */
-  }
-  
-  .item-card img {
+  font-family: "Arial", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+}
+
+.header h1 {
+  color: #333;
+  font-size: 2rem;
+}
+
+.header p {
+  color: #555;
+  font-size: 1.2rem;
+}
+
+.featured-items {
+  background-color: #fff;
+  padding: 20px;
+}
+
+.item-list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.item-card {
+  width: 350px;
+  height: 450px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  /* Align content at the top */
+  align-items: center;
+  /* Center horizontally */
+}
+
+/* .item-card img {
     width: calc(100% - 20px); 
     height: auto;
     object-fit: cover;
     margin-bottom: 10px; 
     border: 10px solid #fff; 
     border-bottom: 1px solid #eee;
-  }
-  
-  .item-card .item-details {
-    text-align: center;
-  }
-  
-  .item-card h3 {
-    font-size: 1.2rem;
-    margin: 5px 0;
-  }
-  
-  .item-card p {
-    color: #555;
-    padding: 0 5px;
-  }
-  
-  .about-us,
-  .contact {
-    background-color: #f8f9fa;
-    padding: 40px 20px;
-  }
-  
-  .about-us h2,
-  .contact h2 {
-    color: #333;
-    font-size: 2rem;
-  }
-  
-  .about-us p,
-  .contact p {
-    color: #555;
-    font-size: 1.2rem;
-  }
-  
-  nav {
-    background-color: #333;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-  }
-  
-  nav .logo {
-    font-size: 1.5rem;
-  }
-  
-  nav .nav-links a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
-  }
-  
-  nav .search-bar {
-    display: flex;
-    align-items: center;
-  }
-  
-  nav .search-bar input {
-    padding: 8px;
-    margin-right: 5px;
-  }
-  
-  nav .search-bar button {
-    background-color: #007bff;
-    color: white;
-    padding: 8px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-  }
-  
+  } */
+
+.item-card .item-details {
+  text-align: center;
+}
+
+.item-card h3 {
+  font-size: 1.2rem;
+  margin: 5px 0;
+}
+
+.item-card p {
+  color: #555;
+  padding: 0 5px;
+}
+
+.about-us,
+.contact {
+  background-color: #f8f9fa;
+  padding: 40px 20px;
+}
+
+.about-us h2,
+.contact h2 {
+  color: #333;
+  font-size: 2rem;
+}
+
+.about-us p,
+.contact p {
+  color: #555;
+  font-size: 1.2rem;
+}
+
+nav {
+  background-color: #333;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+nav .logo {
+  font-size: 1.5rem;
+}
+
+nav .nav-links a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+nav .search-bar {
+  display: flex;
+  align-items: center;
+}
+
+nav .search-bar input {
+  padding: 8px;
+  margin-right: 5px;
+}
+
+nav .search-bar button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}

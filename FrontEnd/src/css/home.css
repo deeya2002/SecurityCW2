@@ -1,194 +1,128 @@
-body {
-  font-family: "Arial", sans-serif;
-  margin: 0;
-  padding: 0;
-}
+/* Add these styles to your existing home.css file */
 
-header {
-  background-color: #f8f9fa;
-  padding: 20px;
-  text-align: center;
-}
-
-.header h1 {
-  color: #333;
-  font-size: 2rem;
-}
-
-.header p {
-  color: #555;
-  font-size: 1.2rem;
-}
-
-.featured-items {
-  background-color: #fff;
-  padding: 20px;
-}
-
-.item-list {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.item-card {
-  width: 350px;
-  height: 450px;
-  margin-bottom: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  overflow: hidden;
+.food-container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  /* Align content at the top */
   align-items: center;
-  /* Center horizontally */
+  padding: 20px;
 }
 
-.item-card img {
-  width: calc(100% - 20px);
-  height: auto;
+.food-images {
+  width: 200px;
+  height: 200px;
   object-fit: cover;
+  border-radius: 50%;
   margin-bottom: 10px;
-  border: 10px solid #fff;
-  border-bottom: 1px solid #eee;
+  margin-top: 10px;
 }
 
-.item-card .item-details {
+
+
+.item-details {
   text-align: center;
 }
 
-.item-card h3 {
-  font-size: 1.2rem;
-  margin: 5px 0;
-}
-
-.item-card p {
-  color: #555;
-  padding: 0 5px;
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
 }
 
 .quantityButton {
-  width: 30px;
-  height: 30px;
-  font-size: 16px;
-}
-
-.about-us,
-.contact {
-  background-color: #f8f9fa;
-  padding: 40px 20px;
-}
-
-.about-us h2,
-.contact h2 {
-  color: #333;
-  font-size: 2rem;
-}
-
-.about-us p,
-.contact p {
-  color: #555;
-  font-size: 1.2rem;
-}
-
-nav {
-  background-color: #333;
-  color: white;
+  background-color: #ffd700;
+  /* Gold color */
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-}
-
-nav .logo {
-  font-size: 1.5rem;
-}
-
-nav .nav-links a {
-  color: white;
-  text-decoration: none;
+  justify-content: center;
   margin: 0 10px;
 }
 
-nav .search-bar {
-  display: flex;
-  align-items: center;
+.food-name {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
-nav .search-bar input {
-  padding: 8px;
-  margin-right: 5px;
+.food-price {
+  font-size: 18px;
+  color: #888;
+  margin-top: 5px;
 }
 
-nav .search-bar button {
-  background-color: #007bff;
-  color: white;
-  padding: 8px;
-  border: none;
-  cursor: pointer;
+.food-location {
+  font-size: 14px;
+  color: #888;
 }
 
 .cart-btn {
-  background-color: #FF8C8C;
-  margin-right: 20px;
-}
-
-footer {
-  background-color: #333;
+  background-color: #ff4500;
+  /* Red color */
   color: white;
-  text-align: center;
-  padding: 20px 0;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
-/* Add these styles to your existing home.css file */
+.cart-btn:hover {
+  background-color: #ff6347;
+  /* Lighter red */
+}
 
-.ReactModal__Overlay {
-  position: center;
+.item-card {
+  margin: 20px;
+}
+
+header {
+  text-align: center;
+  padding: 20px;
+}
+
+.featured-items,
+.about-us,
+.contact {
+  padding: 20px;
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  outline: none;
+  width: 400px;
+  text-align: center;
+}
+
+.modal-overlay {
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-.ReactModal__Content {
-  position: center;
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  outline: none;
-  width: 350px;
-  height: 250px;
-  max-width: 80%;
-  max-height: 80%;
-  overflow-y: auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Add these styles to your existing home.css file */
-
-.loginbutton,
-.closebutton {
-  padding: 10px 20px;
-  border: 2px solid transparent;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  outline: none;
-}
-
-/* Login button styles */
 .loginbutton {
-  background-color: white;
-  color: green;
-  border-color: green;
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
   margin: 10px;
+  border-radius: 5px;
 }
 
 .loginbutton:hover {
