@@ -1,4 +1,4 @@
-const Review = require("../model/foodReviewModel");
+const Review = require("../model/ReviewModel");
 const mongoose = require('mongoose');
 
 // Controller to add a review for a food
@@ -79,10 +79,8 @@ const getFoodReviews = async (req, res) => {
     // Fetch all reviews for the food
     const reviews = await Review.find({ foodID }).populate("user");
 
-    // Create an array to store the review IDs liked by the user
     let likedReviewIds = [];
 
-    // If the user is logged in, fetch the liked reviews by the user
     if (loggedInUserID) {
       const likedReviews = await Review.find({
         _id: { $in: reviews.map((review) => new mongoose.Types.ObjectId(review._id)) },
@@ -91,10 +89,9 @@ const getFoodReviews = async (req, res) => {
       likedReviewIds = likedReviews.map((review) => review._id.toString());
     }
 
-    // Add the isUserLoggedIn and isLiked fields to each review object
     const reviewsWithExtraFields = reviews.map((review) => ({
       ...review.toObject(),
-      isUserLoggedIn: loggedInUserID === review.user._id.toString(),
+      isUserLoggedIn: loggedInUserID ? loggedInUserID === review.user?._id.toString() : false,
       isLiked: likedReviewIds.includes(review._id.toString()),
     }));
 
@@ -105,6 +102,7 @@ const getFoodReviews = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 // Controller to get a review by id
 const getFoodReview = async (req, res) => {

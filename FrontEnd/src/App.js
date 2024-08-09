@@ -36,7 +36,7 @@ import AdminRoutes from './protected_routes/AdminRoutes';
 function App() {
   const DisplayNavbar = () => {
     const location = useLocation();
-    const hideNavbarRoutes = ['/login', '/register', '/sendemail', '/verifytoken'];
+    const hideNavbarRoutes = ['/login', '/register', '/sendemail', '/verifytoken', '/changepassword'];
 
     if (hideNavbarRoutes.includes(location.pathname.toLowerCase())) {
       return null;
@@ -46,7 +46,7 @@ function App() {
 
   const DisplayFooter = () => {
     const location = useLocation();
-    const hideFooterRoutes = ['/login', '/register', '/sendemail', '/verifytoken'];
+    const hideFooterRoutes = ['/login', '/register', '/sendemail', '/verifytoken', '/changepassword', '/admin/restaurant', '/admin/dashboard', '/admin/edit/:id', '/admin/orderlist'];
 
     if (hideFooterRoutes.includes(location.pathname.toLowerCase())) {
       return null;
@@ -74,12 +74,6 @@ function App() {
         <Route path="/changePassword" element={<ChangePassword />} />
         <Route path="/sendemail" element={<SendEmail />} />
         <Route path="/verifytoken" element={<ForgotPassword />} />
-
-        {/* <Route element={<UserRoutes />}>
-          <Route path='/profile' element={<h1>Profile</h1>} />
-        </Route> */}
-
-
         <Route element={<AdminRoutes />} >
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/edit/:id' element={<AdminEditFood />} />

@@ -111,12 +111,31 @@ export const orderPayment = (formData) => {
 
 
 //Reviews Api
-export const createReview = formData =>
-  Api.post('/api/reviews/create_review', formData, config);
 
-// get reviews API
-export const getReviews = () =>
-  Api.get('/api/reviews/get_reviews');
+// Function to add a review for a food
+export const addFoodReviewApi = (id, formData) =>
+  axios.post(`/api/reviews/${id}/addreview`, formData, config);
 
-export const deleteReview = id =>
-  Api.delete(`/api/reviews/delete_review/${id}`, config);
+// Function to update a review
+export const updateFoodReviewApi = (id, reviewID, reviewData) =>
+  axios.put(`/api/reviews/${id}/reviews/${reviewID}`, reviewData, config);
+
+// Function to delete a review
+export const deleteFoodReviewApi = (id, reviewID) =>
+  axios.delete(`/api/reviews/${id}/reviews/${reviewID}`, config);
+
+// Function to get all reviews for a food
+export const getFoodReviewsApi = (id) =>
+  axios.get(`/api/reviews/${id}/reviews`, config);
+
+// Function to get a review by id
+export const getFoodReviewApi = (id, reviewID) =>
+  axios.get(`/api/reviews/${id}/reviews/${reviewID}`, config);
+
+// Function to like a review
+export const likeFoodReviewApi = (id, reviewID) =>
+  axios.post(`/api/reviews/${id}/reviews/${reviewID}/like`, {}, config);
+
+// Function to unlike a review
+export const unlikeFoodReviewApi = (id, reviewID) =>
+  axios.post(`/api/reviews/${id}/reviews/${reviewID}/unlike`, {}, config)

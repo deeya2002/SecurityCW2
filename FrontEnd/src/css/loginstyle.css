@@ -91,6 +91,7 @@ button#submit {
   margin-left: 50px;
 }
 
+
 label,
 h1 {
   text-shadow: 0px 0px 1px #101014;
@@ -103,4 +104,10 @@ div.reset_link {
 
 div.reg_link {
   font-size: small;
+}
+
+div.gue_link {
+  font-size: small;
+  text-decoration: none;
+  /* Remove underline */
 }

@@ -5,6 +5,7 @@ const connectToDB = require('./database/db');
 const cors = require('cors');
 const acceptMultimedia = require('connect-multiparty')
 const cloudinary = require('cloudinary');
+const { authGuard } = require('./middleware/authGuard');
 
 // making express app
 const app = express();
@@ -51,7 +52,7 @@ app.use('/api/menu', require('./routes/menuRoutes'));
 app.use('/api/food', require('./routes/food_routes'));
 
 //create routes for food reviews
-app.use('/api/foodreviews', require('./routes/review_routes'));
+app.use('/api/reviews', authGuard, require('./routes/review_routes'));
 
 //create route for restaurant
 app.use('/api/restaurant', require('./routes/restaurantRoutes'));

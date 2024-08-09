@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaUser } from "react-icons/fa";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { loginApi } from '../../apis/Api';
@@ -7,6 +8,7 @@ import '../../css/loginstyle.css';
 const LoginForm = () => {
   const [username, setUserName] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const changeUserName = e => {
@@ -19,7 +21,7 @@ const LoginForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-
+    setError("");
     const data = {
       username: username,
       password: password,
@@ -39,7 +41,11 @@ const LoginForm = () => {
       })
       .catch(err => {
         console.log(err);
-        toast.error('Server Error');
+        if (err.response && err.response.data && err.response.data.error) {
+          setError(err.response.data.error);
+        } else {
+          setError("An error occurred. Please try again later.");
+        }
       });
   };
   return (
@@ -66,12 +72,19 @@ const LoginForm = () => {
                 onChange={changePassword}
                 placeholder="Enter your password"
               />
+              {error && (
+                <p className="text-red-500 ">{error}</p>
+              )}
               <div className="reset_link">
                 <Link to="/sendemail">Forgot password?</Link>
               </div>
               <button onClick={handleSubmit} type="submit" id="submit">
                 Log In
               </button>
+              <div className="gue_link" >
+                <FaUser className="text-xl" />
+                <Link className="gue_link" to='/'> Continue as Guest</Link>
+              </div>
               <div className="reg_link">
                 Not a member? <Link to="/register">Register now</Link>
               </div>

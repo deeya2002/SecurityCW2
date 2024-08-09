@@ -1,28 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
-import {getAllRestaurantsApi} from '../apis/Api';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { getAllRestaurantsApi } from '../apis/Api';
 import '../css/restaurant.css';
 
 const RestaurantList = () => {
   // Load all products when the page loads
-  const [restaurants, setRestaurants] = useState ([]);
+  const [restaurants, setRestaurants] = useState([]);
 
-  useEffect (() => {
-    getAllRestaurantsApi ().then (res => {
-      setRestaurants (res.data.restaurants);
+  useEffect(() => {
+    getAllRestaurantsApi().then(res => {
+      setRestaurants(res.data.restaurants);
     });
   }, []);
   return (
     <section className="featured-items">
       <h2>Restaurant Lists</h2>
       <div className="item-list">
-        {restaurants.map (item => (
+        {restaurants.map(item => (
           <div key={item.id} className="item-card">
             <Link>
               <img
                 src={item.restaurantImageUrl}
                 alt={item.restaurantName}
-                style={{width: '250px', height: '250px', objectFit: 'cover'}}
+                style={{ width: '250px', height: '250px', objectFit: 'cover' }}
               />
             </Link>
             <div className="item-details">

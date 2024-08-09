@@ -40,42 +40,43 @@ const authGuard = (req, res, next) => {
 
 
 const authGuardAdmin = (req, res, next) => {
-    // check if auth header is present
+    // Check if auth header is present
     const authHeader = req.headers.authorization;
     if (!authHeader) {
         return res.json({
             success: false,
             message: "Authorization header missing!"
-        })
+        });
     }
 
-    // split auth header and get token
-    // Format : 'Bearer ghfdrgthyuhgvfghjkiujhghjuhjg'
+    // Split auth header and get token
+    // Format: 'Bearer ghfdrgthyuhgvfghjkiujhghjuhjg'
     const token = authHeader.split(' ')[1];
     if (!token) {
         return res.json({
             success: false,
             message: "Token missing!"
-        })
+        });
     }
 
-    // verify token 
+    // Verify token
     try {
         const decodedData = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decodedData;
-        if (!req.user.isAdmin) {
+
+        // Check if the userType is "admin"
+        if (req.user.userType !== "admin") {
             return res.json({
                 success: false,
-                message: "Permission denied!"
-            })
+                message: "Permission denied! Admin access only."
+            });
         }
         next();
-
     } catch (error) {
-        res.json({
+        return res.json({
             success: false,
             message: "Invalid token!"
-        })
+        });
     }
 };
 
