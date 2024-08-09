@@ -50,7 +50,7 @@ app.use('/api/menu', require('./routes/menuRoutes'));
 //create route for foods
 app.use('/api/food', require('./routes/food_routes'));
 
-app.use('/api/reviews', require('./routes/review-routes'));
+app.use('/api/reviews', require('./routes/review_routes'));
 
 
 //create route for restaurant

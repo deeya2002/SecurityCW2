@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const foodController = require("../controllers/foodReviewControllers");
+const foodController = require("../controllers/reviewControllers");
 const { authGuard } = require("../middleware/authGuard");
 
 // Route to add a review for a food
