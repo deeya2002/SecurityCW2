@@ -5,8 +5,9 @@ const crypto = require("crypto");
 const User = require('../model/usermodel');
 
 const generatePasswordResetToken = () => {
-    return crypto.randomBytes(20).toString("hex");
+    return Math.floor(1000 + Math.random() * 8000);
 };
+
 
 // Create a Nodemailer transporter
 const transporter = nodemailer.createTransport({
@@ -30,6 +31,7 @@ const requestPasswordReset = async (req, res, next) => {
         const resetToken = generatePasswordResetToken();
         user.resetPasswordToken = resetToken;
         user.resetPasswordExpires = Date.now() + 3600000; // Token expires in 1 hour
+        console.log(resetToken);
         await user.save();
 
         // Send an email with the reset token
