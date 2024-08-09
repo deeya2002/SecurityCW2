@@ -31,6 +31,7 @@ import AdminEditFood from './pages/admin/AdminEditFood';
 import AdminOrderList from './pages/admin/AdminOrderList';
 import AdminRestaurant from './pages/admin/AdminRestaurant';
 import AdminRoutes from './protected_routes/AdminRoutes';
+import ChangePassword from './pages/changepassword';
 
 function App() {
   const DisplayNavbar = () => {
@@ -73,6 +74,7 @@ function App() {
         <Route path='/payment' element={<Khalti />} />
         <Route path='/review' element={<Review />} />
         <Route path='/reviewlist' element={<ReviewComponent />} />
+        <Route path="/changePassword" element={<ChangePassword/>} />
 
         {/* <Route element={<UserRoutes />}>
           <Route path='/profile' element={<h1>Profile</h1>} />

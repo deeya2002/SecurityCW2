@@ -24,6 +24,8 @@ export const registerApi = data => Api.post ('/api/user/create', data);
 // Create login api
 export const loginApi = data => Api.post ('/api/user/login', data);
 
+export const updatePassword = data => Api.put('/api/user/change-password',data, config );
+
 //Api for foods
 // create food API
 export const createFoodApi = formData =>

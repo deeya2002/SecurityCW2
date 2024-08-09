@@ -6,7 +6,7 @@ import '../css/description.css';
 
 const DescriptionPage = () => {
   const { _id } = useParams();
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const [foodDetails, setFoodDetails] = useState({
     foodName: '',
     foodPrice: '',
@@ -37,30 +37,24 @@ const navigate = useNavigate();
 
   const handleSubmit = () => {
     navigate("/");
-    toast.success("Can order from here")
+    toast.success("Can order from here");
   };
-  
+
   return (
-    <div className="flex-container">
-      <div className="food-image">
-        <img src={foodDetails.foodImageUrl} alt={foodDetails.foodName} className="img-thumbnail" />
-      </div>
-      <div className="food-details">
-        <div className="pname">{foodDetails.foodName}</div>
-        <div className="price">Price: {foodDetails.foodPrice}</div>
-        <div className="cate">
-          <p>Category: </p> <p>{foodDetails.foodCategory}</p>
+    <div className="description-page">
+      <div className="food-container">
+        <div className="food-image">
+          <img src={foodDetails.foodImageUrl} alt={foodDetails.foodName} className="img-thumbnail" />
         </div>
-        <p className="desc">Description: {foodDetails.foodDescription}</p>
-        <p className="desc">Location: {foodDetails.foodLocation}</p>
-        <div className="btn-box">
-          <button
-            className="cart-btn"
-            onClick={handleSubmit}
-          >
+        <div className="food-details">
+          <h1 className="food-name">{foodDetails.foodName}</h1>
+          <p className="food-price">Price: {foodDetails.foodPrice}</p>
+          <p className="food-category">Category: {foodDetails.foodCategory}</p>
+          <p className="food-description">Description: {foodDetails.foodDescription}</p>
+          <p className="food-location">Location: {foodDetails.foodLocation}</p>
+          <button className="add-to-cart-btn" onClick={handleSubmit}>
             Add to cart
           </button>
-
         </div>
       </div>
     </div>

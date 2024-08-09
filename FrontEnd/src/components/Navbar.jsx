@@ -70,11 +70,11 @@ const Navbar = ({ size, setShow }) => {
                   Home
                 </Link>
               </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/restaurant">
-                    Restaurant
-                  </Link>
-                </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/restaurant">
+                  Restaurant
+                </Link>
+              </li>
               {user && user.userType === "admin" ? (
                 <li className="nav-item">
                   <Link className="nav-link" to="/admin/restaurant">
@@ -157,7 +157,7 @@ const Navbar = ({ size, setShow }) => {
                       <Link
                         onClick={handlePassword}
                         className="dropdown-item"
-                        to="/sendemail"
+                        to="/changepassword"
                       >
                         Change Password
                       </Link>

@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const User = require("../model/usermodel")
 const jwt = require("jsonwebtoken")
-const middleware = require("../middleware/authGuard")
-const { mailConfig, resetCode } = require("../utils/resetPassword")
-const ResetCode = require("../model/resetCodeModel");
 const { asyncHandler } = require('../middleware/async');
 const bcrypt = require('bcrypt');
 
@@ -399,8 +396,6 @@ module.exports = {
     createUser,
     loginUser,
     updateUser,
-    // resetPassword,
-    // verifyResetCode,
     updatePassword,
     getSingleUser,
     uploadImage

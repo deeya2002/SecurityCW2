@@ -8,8 +8,7 @@ import { getAllFoodsApi } from '../apis/Api';
 import '../css/home.css';
 import { addToCart } from '../features/cart/cartSlice';
 
-Modal.setAppElement('#root'); // This is necessary for accessibility
-
+Modal.setAppElement('#root'); 
 const Homepage = () => {
   const [foods, setFoods] = useState([]);
   const [orderitem, setOrderitem] = useState([]);

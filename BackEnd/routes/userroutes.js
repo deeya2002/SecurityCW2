@@ -3,6 +3,8 @@ const router = require('express').Router();
 const userController = require('../controllers/usercontrollers.js');
 const { authGuard } = require('../middleware/authGuard.js');
 const { upload } = require('../middleware/uploads.js');
+const passwordRecoveryController = require('../controllers/forgetpasswordControllers.js');
+const User = require("../model/usermodel")
 
 
 //all the routes for the user
@@ -22,15 +24,15 @@ router.put("/change-password", authGuard, userController.updatePassword);
 
 router.post("/uploadImage", upload, userController.uploadImage);
 
-// // Password recovery routes
-// router.post(
-//     "/password-recovery/request-password-reset",
-//     passwordRecoveryController.requestPasswordReset
-//   );
-//   router.post(
-//     "/password-recovery/reset-password/:token",
-//     passwordRecoveryController.resetPassword
-//   );
+// Password recovery routes
+router.post(
+    "/password-recovery/request-password-reset",
+    passwordRecoveryController.requestPasswordReset
+  );
+  router.post(
+    "/password-recovery/reset-password/:token",
+    passwordRecoveryController.resetPassword
+  );
 
 //export
 module.exports = router;
