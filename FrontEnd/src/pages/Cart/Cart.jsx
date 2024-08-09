@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createOrderApi } from '../apis/Api';
+import { createOrderApi } from '../../apis/Api';
 import { toast } from 'react-toastify';
 const Cart = () => {
   const [CartDat, setCartDat] = useState ([]);

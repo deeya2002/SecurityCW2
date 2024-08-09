@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { loginApi } from '../apis/Api';
-import '../css/loginstyle.css';
+import { loginApi } from '../../apis/Api';
+import '../../css/loginstyle.css';
 
 const LoginForm = () => {
   const [username, setUserName] = useState('');

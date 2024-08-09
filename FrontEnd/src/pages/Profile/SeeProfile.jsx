@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getUserProfileApi } from '../apis/Api';
+import { getUserProfileApi } from '../../apis/Api';
 
 const SeeProfile = () => {
   const {userId} = useParams ();

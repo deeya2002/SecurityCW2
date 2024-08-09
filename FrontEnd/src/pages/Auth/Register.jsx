@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import zxcvbn from "zxcvbn";
-import { registerApi } from '../apis/Api';
-import '../css/regstyle.css';
+import { registerApi } from '../../apis/Api';
+import '../../css/regstyle.css';
 
 const Register = () => {
   //step: 1 creating a state variable
@@ -14,7 +14,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setconfirmPassword] = useState('');
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+  const [message] = useState("");
   const [passwordStrength, setPasswordStrength] = useState(0);
   const navigate = useNavigate();
 
@@ -71,7 +71,7 @@ const Register = () => {
           toast.success(res.data.message);
           navigate('/login');
         } else {
-          toast.error(res.data.message);
+          setError(res.data.message);
         }
       })
       .catch((error) => {
@@ -82,7 +82,7 @@ const Register = () => {
         ) {
           setError(error.response.data.error);
         } else {
-          setError("An error occurred. Please try again.");
+          toast.error("An internal error occurred. Please try again.");
         }
       });
   };
@@ -129,6 +129,8 @@ const Register = () => {
     const passwordScore = zxcvbn(e.target.value);
     setPasswordStrength(passwordScore.score);
   };
+
+  const strengthColor = getPasswordStrengthColor(passwordStrength);
   return (
     <html lang="en">
       <head>
@@ -192,7 +194,7 @@ const Register = () => {
                   {
                     password.length > 0
                     && (
-                      <div className="text-sm text-black">
+                      <div className="text-sm" style={{ color: strengthColor }}>
                         Password Strength:{" "}
                         <span
                           className={`text-${getPasswordStrengthColor(

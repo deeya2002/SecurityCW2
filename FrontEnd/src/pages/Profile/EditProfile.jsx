@@ -14,7 +14,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getUserProfileApi, updateUserProfileApi } from '../apis/Api';
+import { getUserProfileApi, updateUserProfileApi } from '../../apis/Api';
 
 const EditProfile = () => {
   const {userId} = useParams ();

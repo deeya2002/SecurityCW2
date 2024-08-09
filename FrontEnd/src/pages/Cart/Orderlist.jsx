@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { checkpendingorderuser } from './../apis/Api';
+import { checkpendingorderuser } from '../../apis/Api';
 import { Link } from 'react-router-dom';
 
 const OrderList = () => {

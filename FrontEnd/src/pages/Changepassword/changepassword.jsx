@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { updatePassword } from '../apis/Api';
+import { updatePasswordApi } from '../../apis/Api';
 
 export default function ChangePassword() {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+    const [ setError] = useState("");
+    const [ setSuccessMessage] = useState("");
 
 
     const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function ChangePassword() {
         };
 
         try {
-            const response = await updatePassword(data);
+            const response = await updatePasswordApi(data);
 
             if (response.data.success === false) {
                 toast.error(response.data.message);
@@ -42,13 +42,13 @@ export default function ChangePassword() {
         }
     };
 
-    const handleReset = () => {
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
-        setError("");
-        setSuccessMessage("");
-    };
+    // const handleReset = () => {
+    //     setCurrentPassword("");
+    //     setNewPassword("");
+    //     setConfirmPassword("");
+    //     setError("");
+    //     setSuccessMessage("");
+    // };
 
 
     return (

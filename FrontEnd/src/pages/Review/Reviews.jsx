@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { deleteReview, getReviews } from '../apis/Api';
-import '../css/Reviews.css';
+import { deleteReview, getReviews } from '../../apis/Api';
+import '../../css/Reviews.css';
 
 const ReviewComponent = () => {
   const [reviews, setReviews] = useState([]);

@@ -123,7 +123,6 @@ const AdminDashboard = () => {
                                     <input onChange={handleImageUpload} type="file" className='form-control' />
 
                                     {/* Preview Image */}
-
                                     {
                                         previewImage && <img src={previewImage} className='img-fluid rounded object-cover mt-2' />
                                     }

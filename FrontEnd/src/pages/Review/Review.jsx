@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import "../css/Review.css";
-import { createReview } from '../apis/Api';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { createReview } from '../../apis/Api';
+import "../../css/Review.css";
 
 const Review = () => {
     const [desc, setdesc] = useState('');
@@ -29,8 +29,8 @@ const Review = () => {
                 console.log(err);
                 toast.error('Review has already been created!');
             });
-            navigate("/reviewlist"); 
-            
+        navigate("/reviewlist");
+
     };
 
     return (

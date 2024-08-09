@@ -6,37 +6,37 @@ import {
 } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Homepage from './pages/Homepage';
-import Register from './pages/Register';
+
 
 // for showing toast messages
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/Footer';
 import Khalti from './components/Khalti/Khalti';
-import Cart from './pages/Cart';
-import DescriptionPage from './pages/DescriptionPage';
-import EditProfile from './pages/EditProfile';
-import ForgotPasswordCode from './pages/ForgetPasswordCode';
-import Login from './pages/Login';
-import OrderList from './pages/Orderlist';
-import ProfilePage from './pages/ProfilePage';
-import ResetPassword from './pages/ResetPassword';
-import RestaurantList from './pages/RestaurantList';
-import Review from './pages/Review';
-import ReviewComponent from './pages/Reviews';
-import SeeProfile from './pages/SeeProfile';
-import SendEmail from './pages/SendEmail';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminEditFood from './pages/admin/AdminEditFood';
 import AdminOrderList from './pages/admin/AdminOrderList';
 import AdminRestaurant from './pages/admin/AdminRestaurant';
+import Login from './pages/Auth/Login';
+import Register from './pages/Auth/Register';
+import Cart from './pages/Cart/Cart';
+import OrderList from './pages/Cart/Orderlist';
+import ChangePassword from './pages/Changepassword/changepassword';
+import DescriptionPage from './pages/DescriptionPage';
+import ForgotPassword from './pages/Forgotpassword/ResetPassword';
+import SendEmail from './pages/Forgotpassword/SendEmail';
+import EditProfile from './pages/Profile/EditProfile';
+import ProfilePage from './pages/Profile/ProfilePage';
+import SeeProfile from './pages/Profile/SeeProfile';
+import RestaurantList from './pages/RestaurantList';
+import Review from './pages/Review/Review';
+import ReviewComponent from './pages/Review/Reviews';
 import AdminRoutes from './protected_routes/AdminRoutes';
-import ChangePassword from './pages/changepassword';
 
 function App() {
   const DisplayNavbar = () => {
     const location = useLocation();
-    const hideNavbarRoutes = ['/login', '/register'];
+    const hideNavbarRoutes = ['/login', '/register', '/sendemail', '/verifytoken'];
 
     if (hideNavbarRoutes.includes(location.pathname.toLowerCase())) {
       return null;
@@ -46,7 +46,7 @@ function App() {
 
   const DisplayFooter = () => {
     const location = useLocation();
-    const hideFooterRoutes = ['/login', '/register'];
+    const hideFooterRoutes = ['/login', '/register', '/sendemail', '/verifytoken'];
 
     if (hideFooterRoutes.includes(location.pathname.toLowerCase())) {
       return null;
@@ -64,9 +64,6 @@ function App() {
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/editprofile' element={<EditProfile />} />
         <Route path='/seeprofile' element={<SeeProfile />} />
-        <Route path='/sendemail' element={<SendEmail />} />
-        <Route path='/resetcode' element={<ForgotPasswordCode />} />
-        <Route path='/resetpassword' element={<ResetPassword />} />
         <Route path='/restaurant' element={<RestaurantList />} />
         <Route path='/descriptionpage/:_id' element={<DescriptionPage />} />
         <Route path='/cart' element={<Cart />} />
@@ -74,7 +71,9 @@ function App() {
         <Route path='/payment' element={<Khalti />} />
         <Route path='/review' element={<Review />} />
         <Route path='/reviewlist' element={<ReviewComponent />} />
-        <Route path="/changePassword" element={<ChangePassword/>} />
+        <Route path="/changePassword" element={<ChangePassword />} />
+        <Route path="/sendemail" element={<SendEmail />} />
+        <Route path="/verifytoken" element={<ForgotPassword />} />
 
         {/* <Route element={<UserRoutes />}>
           <Route path='/profile' element={<h1>Profile</h1>} />
