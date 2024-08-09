@@ -4,8 +4,8 @@ const dotenv = require('dotenv');
 const connectToDB = require('./database/db');
 const cors = require('cors');
 const acceptMultimedia = require('connect-multiparty')
-const cloudinary = require('cloudinary')
-const reviewRoute = require('./routes/reviewRoute')
+const cloudinary = require('cloudinary');
+const { authGuard } = require('./middleware/authGuard');
 // making express app
 const app = express();
 
@@ -50,14 +50,15 @@ app.use('/api/menu', require('./routes/menuRoutes'));
 //create route for foods
 app.use('/api/food', require('./routes/food_routes'));
 
+app.use('/api/reviews', require('./routes/review-routes'));
+
+
 //create route for restaurant
 app.use('/api/restaurant', require('./routes/restaurantRoutes'));
 
 //create route for offer
 app.use('/api/offer', require('./routes/offerRoutes'));
 
-//cretae route for review
-app.use("/api/reviews", require('./routes/reviewRoute'));
 
 const PORT = process.env.PORT;
 
