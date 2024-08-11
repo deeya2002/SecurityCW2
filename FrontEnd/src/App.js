@@ -25,6 +25,7 @@ import ChangePassword from './pages/Changepassword/changepassword';
 import DescriptionPage from './pages/DescriptionPage';
 import ForgotPassword from './pages/Forgotpassword/ResetPassword';
 import SendEmail from './pages/Forgotpassword/SendEmail';
+import VerifyToken from './pages/Forgotpassword/VerifyToken';
 import EditProfile from './pages/Profile/EditProfile';
 import ProfilePage from './pages/Profile/ProfilePage';
 import SeeProfile from './pages/Profile/SeeProfile';
@@ -73,13 +74,16 @@ function App() {
         <Route path='/reviewlist' element={<ReviewComponent />} />
         <Route path="/changePassword" element={<ChangePassword />} />
         <Route path="/sendemail" element={<SendEmail />} />
-        <Route path="/verifytoken" element={<ForgotPassword />} />
+        <Route path="/verifytoken" element={<VerifyToken />} />
+        <Route path="/resetpassword" element={<ForgotPassword />} />
+
+
+
         <Route element={<AdminRoutes />} >
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
           <Route path='/admin/edit/:id' element={<AdminEditFood />} />
           <Route path='/admin/restaurant' element={<AdminRestaurant />} />
           <Route path='/admin/orderlist' element={<AdminOrderList />} />
-
         </Route>
 
       </Routes>

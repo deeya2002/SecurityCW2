@@ -3,19 +3,19 @@ const mongoose = require('mongoose');
 
 // Controller to add a review for a food
 const addFoodReview = async (req, res) => {
+  console.log("welcome")
   try {
-    const foodID = req.params.id;
-    const { rating, review } = req.body;
-    const user = req.user.id;
 
+    const { rating, review, id } = req.body;
+    const user = req.user.id;
+    console.log(user, req.body)
     const newReview = new Review({
-      foodID,
+      id,
       user,
       rating,
       review,
       createdAt: Date.now(),
     });
-
     await newReview.save();
 
     res.status(201).json({

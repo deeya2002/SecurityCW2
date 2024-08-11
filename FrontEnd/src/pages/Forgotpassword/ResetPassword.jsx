@@ -1,10 +1,16 @@
 import { useState } from "react";
-import { resetPasswordApi } from "../../apis/Api"; // Import the API method
+import { useLocation } from "react-router";
+import { resetPasswordApi } from "../../apis/Api";
 // import Bg from "../assets/images/bg2.jpg";
 // import Logo from "../assets/images/filmcratebg.png";
 
 export default function ForgotPassword() {
-    const [token, setToken] = useState("");
+    const location = useLocation();
+
+    // Get the user's email from the previous state
+    const userEmail = location.state && location.state.userEmail;
+
+    console.log(userEmail);
     const [password, setNewPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -14,17 +20,16 @@ export default function ForgotPassword() {
         setNewPassword(e.target.value);
     };
 
-    const handleTokenChange = (e) => {
-        setToken(e.target.value);
-    };
+    const handleCheckToken = async (e) => {
+        e.preventDefault();
+        console.log("here")
 
-    const handleCheckToken = async () => {
         try {
             setLoading(true);
 
-            const data = { password, token };
-
-            const response = await resetPasswordApi(token, data);
+            const data = { password, userEmail };
+            console.log("hello" + data?.password + data?.userEmail)
+            const response = await resetPasswordApi(data);
 
             if (response.status === 200) {
                 setSuccessMessage("Password recovery successful!");
@@ -65,17 +70,6 @@ export default function ForgotPassword() {
 
                         <div>
                             <label className="block text-[#305973] text-3xl texts">
-                                Token
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Enter the token from your email"
-                                value={token}
-                                onChange={handleTokenChange}
-                                className="border border-gray-400 p-2 rounded-md mb-4"
-                            />
-
-                            <label className="block text-[#305973] text-3xl texts">
                                 New Password
                             </label>
                             <input
@@ -91,7 +85,7 @@ export default function ForgotPassword() {
                                 onClick={handleCheckToken}
                                 disabled={loading}
                             >
-                                Recover Password
+                                Recover Passw
                             </button>
                         </div>
                     </form>

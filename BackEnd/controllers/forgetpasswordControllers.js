@@ -40,7 +40,6 @@ const requestPasswordReset = async (req, res, next) => {
             subject: "Password Reset",
             text: `Your password reset token is: ${resetToken}. Use this token to reset your password.`,
         };
-
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 console.log(error);
@@ -53,16 +52,58 @@ const requestPasswordReset = async (req, res, next) => {
     }
 };
 
+const verifyResetToken = async (req, res) => {
+    const { token, email } = req.body;
+
+    try {
+        // Find the user by email
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.json({
+                success: false,
+                message: "User not found with the provided email."
+            });
+        }
+
+        // Find the reset token for the user
+        if (user.resetPasswordToken !== token || Date.now() > user.resetPasswordExpires) {
+            return res.json({
+                success: false,
+                message: "Invalid or expired reset token."
+            });
+        }
+
+        // If valid, set reset token and expiration to null
+        user.resetPasswordToken = null;
+        user.resetPasswordExpires = null;
+        await user.save();
+
+        return res.json({
+            success: true,
+            message: "Reset token verified successfully."
+        });
+    } catch (error) {
+        console.error("Error in verifyResetToken:", error);
+        return res.json({
+            success: false,
+            message: 'Server Error: ' + error.message,
+        });
+    }
+};
+
+
 const resetPassword = async (req, res, next) => {
     const { token } = req.params;
-    const { password } = req.body;
+    const { password, userEmail } = req.body;
 
     try {
         // Check for empty password
         if (!password) {
             return res.status(400).json({ error: "Please enter a new password" });
         }
-
+        if (!userEmail) {
+            return res.status(400).json({ error: "Please enter a email" });
+        }
         // Check for password complexity
         const passwordRegex =
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+={}[\]:;<>,.?~\\-])/;
@@ -80,17 +121,15 @@ const resetPassword = async (req, res, next) => {
                 error: `Password length should be at least ${minLength} characters.`,
             });
         }
-
+        console.log(userEmail, "\n", password)
         const user = await User.findOne({
-            resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() },
+            email: userEmail
         });
 
         if (!user) {
             return res.status(400).json({ error: "Invalid or expired token" });
         }
 
-        // Reset password and clear reset token fields
         const hashedPassword = await bcrypt.hash(password, 10);
         user.password = hashedPassword;
         user.resetPasswordToken = undefined;
@@ -103,5 +142,4 @@ const resetPassword = async (req, res, next) => {
     }
 };
 
-
-module.exports = { requestPasswordReset, resetPassword };
+module.exports = { requestPasswordReset, verifyResetToken, resetPassword };

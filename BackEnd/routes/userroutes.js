@@ -26,13 +26,15 @@ router.post("/uploadImage", upload, userController.uploadImage);
 
 // Password recovery routes
 router.post(
-    "/password-recovery/request-password-reset",
-    passwordRecoveryController.requestPasswordReset
-  );
-  router.post(
-    "/password-recovery/reset-password/:token",
-    passwordRecoveryController.resetPassword
-  );
+  "/password-recovery/request-password-reset",
+  passwordRecoveryController.requestPasswordReset
+);
+// Route to verify the reset token
+router.post('/password-recovery/verify-reset-token', passwordRecoveryController.verifyResetToken);
+router.post(
+  "/password-recovery/reset-password",
+  passwordRecoveryController.resetPassword
+);
 
 //export
 module.exports = router;

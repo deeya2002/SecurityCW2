@@ -52,21 +52,24 @@ const DescriptionPage = () => {
     setReviewText(event.target.value);
   };
 
-  const handleSubmitReview = async () => {
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    console.log("here")
     try {
       const reviewData = {
         rating: rating,
         review: reviewText,
+        id: _id
       };
 
       // Log the review data to verify it is correctly formatted
       console.log('Submitting review data:', reviewData);
 
-      // Call the API function to add the review
-      const response = await addFoodReviewApi(_id, reviewData);
+      // // Call the API function to add the review
+      const response = await addFoodReviewApi(reviewData);
 
-      // Log the API response for debugging
-      console.log('API response:', response);
+      // // Log the API response for debugging
+      // console.log('API response:', response);
 
       // Reset the state after submitting the review
       setRating(0);

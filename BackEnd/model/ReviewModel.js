@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const User = require("./usermodel");
 
 const reviewSchema = new Schema({
-  foodID: {
+  id: {
     type: String,
     required: true,
   },

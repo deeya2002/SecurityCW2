@@ -31,9 +31,14 @@ export const updatePasswordApi = data => Api.put('/api/user/change-password', da
 export const requestPasswordResetApi = data =>
   Api.post('/api/user/password-recovery/request-password-reset', data);
 
-export const resetPasswordApi = (token, data) =>
-  Api.post(`api/user/password-recovery/reset-password/${token}`, data);
+//Forget password Recovery Apis
+export const verifyTokenApi = data =>
+  Api.post('/api/user/password-recovery/verify-reset-token', data);
 
+export const resetPasswordApi = (data) => {
+  Api.post(`api/user/password-recovery/reset-password`, data);
+
+}
 //Api for foods
 // create food API
 export const createFoodApi = formData =>
@@ -113,8 +118,9 @@ export const orderPayment = (formData) => {
 //Reviews Api
 
 // Function to add a review for a food
-export const addFoodReviewApi = (id, formData) =>
-  axios.post(`/api/reviews/${id}/addreview`, formData, config);
+export const addFoodReviewApi = (formData) => {
+  Api.post(`/api/reviews/addreview`, formData, config);
+}
 
 // Function to update a review
 export const updateFoodReviewApi = (id, reviewID, reviewData) =>
