@@ -28,7 +28,6 @@ import SendEmail from './pages/Forgotpassword/SendEmail';
 import VerifyToken from './pages/Forgotpassword/VerifyToken';
 import EditProfile from './pages/Profile/EditProfile';
 import ProfilePage from './pages/Profile/ProfilePage';
-import SeeProfile from './pages/Profile/SeeProfile';
 import RestaurantList from './pages/RestaurantList';
 import Review from './pages/Review/Review';
 import ReviewComponent from './pages/Review/Reviews';
@@ -65,7 +64,6 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/profile' element={<ProfilePage />} />
         <Route path='/editprofile' element={<EditProfile />} />
-        <Route path='/seeprofile' element={<SeeProfile />} />
         <Route path='/restaurant' element={<RestaurantList />} />
         <Route path='/descriptionpage/:_id' element={<DescriptionPage />} />
         <Route path='/cart' element={<Cart />} />

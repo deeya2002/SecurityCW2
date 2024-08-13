@@ -622,7 +622,7 @@ const loginUser = async (req, res) => {
     }
 };
 
-const getSingleUser = async (req, res, next) => {
+const getSingleUser = async (req, res) => {
     try {
         const userId = req.user.id;
         const user = await User.findById(userId);
@@ -638,6 +638,7 @@ const getSingleUser = async (req, res, next) => {
             id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
+            username: user.username,
             email: user.email,
             isUserLoggedIn: loggedInUserID === user._id.toString(),
         };
@@ -659,33 +660,92 @@ const getSingleUser = async (req, res, next) => {
     }
 };
 
+// Update user profile
 const updateUser = async (req, res) => {
-    const userId = req.user.id;
-    const UserData = req.body;
-
     try {
-        const user = await User.findOne({ _id: userId });
-        if (!user) {
-            logActivity(`Failed user update: User not found (${userId})`, 'user_update');
-            return res.status(404).json({
+        // Step 1: Log incoming data for debugging
+        console.log(req.body);
+        console.log(req.files);
+
+        // Destructuring data from the request body
+        const {
+            firstName,
+            lastName,
+            username,
+            email,
+            number,
+            location,
+            bio,
+        } = req.body;
+
+        // Extracting the uploaded image file
+        const { userImage } = req.files;
+
+        // Validate required fields
+        if (!firstName || !lastName || !username || !email) {
+            return res.status(400).json({
                 success: false,
-                message: "User does not exist."
+                message: "Required fields are missing!",
             });
         }
 
-        await User.findByIdAndUpdate(userId, UserData, { new: true });
+        // Prepare the updated data object
+        let updatedData = {
+            firstName,
+            lastName,
+            username,
+            email,
+            number,
+            location,
+            bio,
+            updatedAt: new Date(), // Update the timestamp
+        };
 
-        logActivity(`User updated: ${user.username}`, 'user_update', user._id);
+        // Check if a user image is provided
+        if (userImage) {
+            // Upload image to Cloudinary
+            const uploadedImage = await cloudinary.uploader.upload(userImage.path, {
+                folder: "user_profiles",
+                crop: "scale",
+            });
+            // Add the image URL to the updated data
+            updatedData.userImageUrl = uploadedImage.secure_url;
+        }
 
-        return res.json({
+        // Retrieve the user ID from the request parameters
+        const userId = req.params.id;
+
+        // Find the user by ID and update their data
+        const updatedUser = await User.findByIdAndUpdate(userId, updatedData, { new: true });
+
+        // Check if the user was found and updated
+        if (!updatedUser) {
+            // Log the activity and respond with a 404 error
+            logActivity(`Failed user update: User not found (${userId})`, 'user_update');
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        // Log the successful update activity
+        logActivity(`User updated: ${updatedUser.username}`, 'user_update', updatedUser._id);
+
+        // Respond with a success message and the updated user data
+        res.json({
             success: true,
-            message: "User updated successfully.",
+            message: "User profile updated successfully!",
+            updatedUser,
         });
+
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({
+        // Log the error for debugging
+        console.error('Error updating user profile:', error);
+
+        // Respond with a 500 error
+        res.status(500).json({
             success: false,
-            message: "Server Error " + error.message
+            message: "Internal server error",
         });
     }
 };

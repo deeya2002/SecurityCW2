@@ -1,50 +1,77 @@
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBRow, MDBTypography } from 'mdb-react-ui-kit';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { getUserProfileApi } from '../../apis/Api'; // Adjust the path as needed
+import '../../css/ProfilePage.css';
 
-const Profile = () => {
-  // Get user data from local storage
-  const user = JSON.parse(localStorage?.getItem("user")) || null;
+const UserProfile = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await getUserProfileApi();
+        if (response.data.success) {
+          console.log(response.data)
+          setUser(response.data.userProfile);
+        } else {
+          setError(response.data.message);
+        }
+      } catch (err) {
+        setError('An error occurred while fetching the user profile');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+
+  const handleClick = () => {
+    navigate('/editprofile');
+  };
   return (
-    <div className="vh-100" style={{ backgroundColor: '#eee' }}>
-      <MDBContainer>
-        <MDBRow className="justify-content-center">
-          <MDBCol md="9" lg="7" xl="5" className="mt-5">
-            <MDBCard style={{ borderRadius: '15px', backgroundColor: '#FF8C8C' }}>
-              <MDBCardBody className="p-4 text-black">
+    <div>
+      <main>
+        <section className="profile">
+          <div className="info">
+            <img
+              src={user.userImageUrl || "/assets/images/noavatar.jpg"}
+              alt="profile-pic"
+              className="profile-pic"
+            />
+            <h3 style={{ textDecoration: 'underline' }}>My Profile</h3>
+            <br></br>
+            <h1>User Profile</h1>
+
+            <div>
+              {user ? (
                 <div>
-                  <MDBTypography tag='h6'>{user.firstName} {user.lastName}'s Profile</MDBTypography>
+                  <p><strong>First Name:</strong> {user.firstName}</p>
+                  <p><strong>Last Name:</strong> {user.lastName}</p>
+                  <p><strong>User Name:</strong> {user.username}</p>
+                  <p><strong>Email:</strong> {user.email}</p>
+                  <p><strong>Location:</strong> {user.location}</p>
+                  <p><strong>Bio:</strong> {user.bio}</p>
                 </div>
-                <div className="d-flex align-items-center mb-4">
-                  <div className="flex-shrink-0">
-                    <MDBCardImage
-                      style={{ width: '70px' }}
-                      className="img-fluid rounded-circle border border-dark border-3"
-                      src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-2.webp'
-                      alt='Generic placeholder image'
-                      fluid />
-                  </div>
-                  <div className="flex-grow-1 ms-3">
-                    <div className="d-flex flex-row align-items-center mb-2">
-                      <p className="mb-0 me-2">@{user.firstName}</p>
-                    </div>
-                    <div>
-                      {/* Open the form with fetched data on "See profile" click */}
-                      <Link to="/editprofile" className="text-decoration-none">
-                        <MDBBtn outline color="dark" rounded size="sm" className="mx-1">Edit Profile</MDBBtn>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-                <hr />
-              </MDBCardBody>
-            </MDBCard>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
+              ) : (
+                <p>User not found</p>
+              )}
+            </div>
+          </div>
+          <button type="submit" id="submit" onClick={handleClick}>
+            Edit Profile
+          </button>
+        </section>
+      </main>
+
     </div>
   );
-}
+};
 
-export default Profile;
+export default UserProfile;

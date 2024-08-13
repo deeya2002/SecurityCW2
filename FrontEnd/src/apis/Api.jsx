@@ -27,8 +27,16 @@ export const loginApi = data => Api.post('/api/user/login', data);
 // Create logout api
 export const logoutApi = () => Api.post('/api/user/logout');
 
+//Update User APi
+export const getUserProfileApi = data =>
+  Api.get(`/api/user/profile`, config, data);
 
-export const updatePasswordApi = data => Api.put('/api/user/change-password', data, config);
+export const updateUserProfileApi = (userid, formData) =>
+  Api.put(`/api/user/updateuser/${userid}`, formData, config);
+
+
+export const updatePasswordApi = data =>
+  Api.put('/api/user/change-password', data, config);
 
 
 //Forget password Recovery Apis
@@ -88,12 +96,7 @@ export const deleteRestaurantApi = id =>
 
 export const getAuditLogsApi = () =>
   Api.get('/api/audit/logs');
-//Update User APi
-export const getUserProfileApi = data =>
-  Api.get(`/api/user/getuser`, data, config);
 
-export const updateUserProfileApi = formData =>
-  Api.put(`/api/user/updateuser`, formData, config);
 
 //Orser APi  
 // create order API

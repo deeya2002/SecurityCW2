@@ -17,8 +17,10 @@ router.post('/login', userController.loginUser);
 //logout the user
 router.post('/logout', userController.logoutUser);
 
-// Get user profile
-router.get("/getuser", authGuard, userController.getSingleUser);
+router.put('/updateuser/:id', authGuard, userController.updateUser);
+
+// Get single user profile
+router.get('/profile', authGuard, userController.getSingleUser);
 
 // Update password
 router.put("/change-password", authGuard, userController.updatePassword);
