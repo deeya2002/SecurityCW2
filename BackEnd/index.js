@@ -6,6 +6,7 @@ const cors = require('cors');
 const acceptMultimedia = require('connect-multiparty')
 const cloudinary = require('cloudinary');
 const { authGuard } = require('./middleware/authGuard');
+const logoutRouter = require('./controllers/usercontrollers');
 
 // making express app
 const app = express();
@@ -71,3 +72,4 @@ app.listen(PORT, () => {
 
 //exporting app
 module.exports = app;
+

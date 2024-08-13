@@ -1,41 +1,37 @@
+import myKey from "./khaltiKey";
 import axios from "axios";
-import myKey from "./KhaltiKey";
 
 let config = {
-    // replace this key with yours
     "publicKey": myKey.publicTestKey,
-    "productIdentity": "1234567890",
-    "productName": "Drogon",
-    "productUrl": "http://gameofthrones.com/buy/Dragons",
+    "productIdentity": "123788",
+    "productName": "Medicare",
+    "productUrl": "http://localhost:3000",
     "eventHandler": {
-        onSuccess (payload) {
-            // hit merchant api for initiating verfication
+        onSuccess(payload) {
             console.log(payload);
-            let data = {
-                "token": payload.token,
-                "amount": payload.amount
-              };
-              
-              
-              axios.get(`http://localhost:3000/khalti/${data.token}/${data.amount}/${myKey.secretKey}`)
-              .then(response => {
-                console.log(response.data);
-                alert('thank you for paying');
-              })
-              .catch(error => {
-                console.log(error);
-              });
+
+            const data = {
+                token: payload.token,
+                amount: payload.amount
+            };
+
+            axios.get('http://localhost:5000/api/user/payment', data)
+                .then(response => {
+                    console.log(response.data);
+                    alert("Thank you for your generosity");
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         },
-        // onError handler is optional
-        onError (error) {
-            // handle errors
+        onError(error) {
             console.log(error);
         },
-        onClose () {
+        onClose() {
             console.log('widget is closing');
         }
     },
-    "paymentPreference": ["KHALTI", "EBANKING","MOBILE_BANKING", "CONNECT_IPS", "SCT"],
+    "paymentPreference": ["KHALTI", "EBANKING", "MOBILE_BANKING"],
 };
 
 export default config;

@@ -1,16 +1,32 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { searchByFoodName } from "../apis/Api";
+import { logoutApi, searchByFoodName } from "../apis/Api";
 
 const Navbar = ({ size, setShow }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Logout function
   const navigate = useNavigate();
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/login");
-    window.location.reload();
+  // const handleLogout = e => {
+  //    e.preventDefault();
+  //   localStorage.clear();
+  //   navigate("/login");
+  //   window.location.reload();
+  // };
+  const handleLogout = async () => {
+    try {
+      // Call the logoutApi function to initiate the logout request
+      await logoutApi();
+
+      // Perform any additional actions needed after logout
+      console.log('Logout successful');
+      localStorage.clear();
+      window.location.href = '/login';
+    } catch (error) {
+      // Handle any errors that occurred during the logout request
+      console.error('Logout failed', error);
+      // Show an error message or notification to the user
+    }
   };
 
   // Get user data from local storage

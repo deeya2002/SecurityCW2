@@ -2,7 +2,7 @@ import KhaltiCheckout from "khalti-checkout-web";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { orderPayment } from "../../apis/Api";
-import config from './KhaltiConfig';
+import config from './khaltiConfig';
 
 const Khalti = () => {
 

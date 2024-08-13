@@ -4,7 +4,7 @@ const userController = require('../controllers/usercontrollers.js');
 const { authGuard } = require('../middleware/authGuard.js');
 const { upload } = require('../middleware/uploads.js');
 const passwordRecoveryController = require('../controllers/forgetpasswordControllers.js');
-const User = require("../model/usermodel")
+
 
 
 //all the routes for the user
@@ -14,13 +14,14 @@ router.post('/create', userController.createUser);
 //login the user
 router.post('/login', userController.loginUser);
 
+//logout the user
+router.post('/logout', userController.logoutUser);
+
 // Get user profile
 router.get("/getuser", authGuard, userController.getSingleUser);
 
 // Update password
 router.put("/change-password", authGuard, userController.updatePassword);
-
-
 
 router.post("/uploadImage", upload, userController.uploadImage);
 

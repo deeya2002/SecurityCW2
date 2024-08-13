@@ -36,7 +36,7 @@ function ChangePassword() {
                 setCurrentPassword('');
                 setNewPassword('');
                 setConfirmPassword('');
-                // navigate('/');
+                navigate('/');
             }
         } catch (error) {
             setError("An error occurred. Please try again.");
