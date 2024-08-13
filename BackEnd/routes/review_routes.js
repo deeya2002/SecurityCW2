@@ -24,4 +24,7 @@ router.post("/:id/reviews/:reviewID/like", foodController.likeFoodReview);
 // Route to unlike a review
 router.post("/:id/reviews/:reviewID/unlike", foodController.unlikeFoodReview);
 
+//food id 
+router.get('/food/:foodID', foodController.getAllFoodReviews);
+
 module.exports = router;

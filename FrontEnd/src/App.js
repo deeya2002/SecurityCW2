@@ -33,6 +33,7 @@ import RestaurantList from './pages/RestaurantList';
 import Review from './pages/Review/Review';
 import ReviewComponent from './pages/Review/Reviews';
 import AdminRoutes from './protected_routes/AdminRoutes';
+import  AdminLogs  from './pages/admin/AdminLogs';
 
 function App() {
   const DisplayNavbar = () => {
@@ -84,6 +85,7 @@ function App() {
           <Route path='/admin/edit/:id' element={<AdminEditFood />} />
           <Route path='/admin/restaurant' element={<AdminRestaurant />} />
           <Route path='/admin/orderlist' element={<AdminOrderList />} />
+          <Route path='/admin/logs' element={<AdminLogs />} />
         </Route>
 
       </Routes>

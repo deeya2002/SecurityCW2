@@ -128,8 +128,8 @@ const Navbar = ({ size, setShow }) => {
               ) : null}
               {user && user.userType === "admin" ? (
                 <li className="nav-item">
-                  <Link className="nav-link" to="/reviewlist">
-                    Review List
+                  <Link className="nav-link" to="/admin/logs">
+                  Logs
                   </Link>
                 </li>
               ) : null}

@@ -61,6 +61,9 @@ app.use('/api/restaurant', require('./routes/restaurantRoutes'));
 //create route for offer
 app.use('/api/offer', require('./routes/offerRoutes'));
 
+//create route for offer
+app.use('/api/audit', require('./routes/auditRoutes'));
+
 
 const PORT = process.env.PORT;
 

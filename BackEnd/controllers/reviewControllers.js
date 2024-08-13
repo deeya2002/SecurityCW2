@@ -123,6 +123,26 @@ const getFoodReview = async (req, res) => {
   }
 };
 
+//get all review of the food id
+const getAllFoodReviews = async (req, res) => {
+  try {
+    const foodID = req.params.foodID;
+
+    // Find reviews by foodID and populate user details
+    const reviews = await Review.find({ food: foodID }).populate("user");
+
+    if (!reviews || reviews.length === 0) {
+      return res.status(404).json({ error: "No reviews found for this food item" });
+    }
+
+    res.json({
+      data: reviews,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Controller to like a review
 const likeFoodReview = async (req, res) => {
   try {
@@ -192,5 +212,6 @@ module.exports = {
   getFoodReviews,
   getFoodReview,
   likeFoodReview,
-  unlikeFoodReview
+  unlikeFoodReview,
+  getAllFoodReviews
 };

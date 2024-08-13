@@ -86,7 +86,8 @@ export const deleteRestaurantApi = id =>
 
 
 
-
+export const getAuditLogsApi = () =>
+  Api.get('/api/audit/logs');
 //Update User APi
 export const getUserProfileApi = data =>
   Api.get(`/api/user/getuser`, data, config);
@@ -141,6 +142,10 @@ export const getFoodReviewsApi = (id) =>
 // Function to get a review by id
 export const getFoodReviewApi = (id, reviewID) =>
   Api.get(`/api/reviews/${id}/reviews/${reviewID}`, config);
+
+//food id reviews
+export const getAllFoodReviewsApi = (id) =>
+  Api.get(`/api/reviews/food/${id}`, config);
 
 // Function to like a review
 export const likeFoodReviewApi = (id, reviewID) =>
