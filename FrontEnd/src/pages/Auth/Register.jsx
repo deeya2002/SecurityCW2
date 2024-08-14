@@ -4,45 +4,32 @@ import { toast } from 'react-toastify';
 import zxcvbn from "zxcvbn";
 import { registerApi } from '../../apis/Api';
 import '../../css/regstyle.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 
 const Register = () => {
-  //step: 1 creating a state variable
   const [firstname, setFirstName] = useState('');
   const [lastname, setLastName] = useState('');
   const [username, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setconfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState("");
   const [message] = useState("");
   const [passwordStrength, setPasswordStrength] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
-  // step 2 : Create a function for changing the state variable
-  const changeFirstName = e => {
-    setFirstName(e.target.value);
-  };
-  const changeLastName = e => {
-    setLastName(e.target.value);
-  };
-  const changeUserName = e => {
-    setUserName(e.target.value);
-  };
-  const changeEmail = e => {
-    setEmail(e.target.value);
-  };
+  const changeFirstName = e => setFirstName(e.target.value);
+  const changeLastName = e => setLastName(e.target.value);
+  const changeUserName = e => setUserName(e.target.value);
+  const changeEmail = e => setEmail(e.target.value);
+  const changeConfirmPassword = e => setConfirmPassword(e.target.value);
 
-  const changeconfirmPassword = e => {
-    setconfirmPassword(e.target.value);
-  };
-
-  //handle after clicking the submit button
   const handleSubmit = e => {
     e.preventDefault();
+    setError("");
 
-    setError(""); // Reset the error state before making the API call
-
-    // Assess password strength
     const passwordScore = zxcvbn(password);
     setPasswordStrength(passwordScore.score);
 
@@ -50,10 +37,7 @@ const Register = () => {
       setError("Passwords do not match");
       return;
     }
-    //step1: check data in console
-    console.log(firstname, lastname, email, password);
 
-    // Creating json data (fieldname: values name)
     const data = {
       firstName: firstname,
       lastName: lastname,
@@ -63,10 +47,8 @@ const Register = () => {
       confirmPassword: confirmPassword,
     };
 
-    //Step: 2 Send data to backend
     registerApi(data)
       .then(res => {
-        console.log(res.data);
         if (res.data.success === true) {
           toast.success(res.data.message);
           navigate('/login');
@@ -74,12 +56,8 @@ const Register = () => {
           setError(res.data.message);
         }
       })
-      .catch((error) => {
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.error
-        ) {
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.error) {
           setError(error.response.data.error);
         } else {
           toast.error("An internal error occurred. Please try again.");
@@ -115,118 +93,121 @@ const Register = () => {
       case 3:
         return "green";
       case 4:
-        return "dark-green";
+        return "darkgreen";
       default:
         return "";
     }
   };
 
   const handlePasswordChange = (e) => {
-    // Update password state
     setPassword(e.target.value);
-
-    // Assess password strength on each input change
     const passwordScore = zxcvbn(e.target.value);
     setPasswordStrength(passwordScore.score);
   };
 
   const strengthColor = getPasswordStrengthColor(passwordStrength);
+  const progressBarWidth = `${(passwordStrength + 1) * 20}%`;
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
+
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Food Delivery Login</title>
-        {/* Link to the imported CSS file */}
-        <link rel="stylesheet" href="regstyle.css" />
-      </head>
-      <body>
-        <div className="main">
-          <div className="regs">
-            <div className="left" />
-            <div className="right">
-              <div className="regbox">
-                <h1>Register</h1>
-                <form action="" id="rg" method="post">
-                  <label htmlFor="Fname">FirstName:</label>
-                  <input
-                    onChange={changeFirstName}
-                    type="text"
-                    id="ba"
-                    name="fname"
-                    placeholder="Enter your First Name"
-                  />
-                  <br />
-                  <label htmlFor="Lname">LastName:</label>
-                  <input
-                    onChange={changeLastName}
-                    type="text"
-                    id="ba"
-                    name="lname"
-                    placeholder="Enter your Last Name"
-                  />
-                  <br />
-                  <label htmlFor="Lname">UserName:</label>
-                  <input
-                    onChange={changeUserName}
-                    type="text"
-                    id="ba"
-                    name="lname"
-                    placeholder="Enter your User Name"
-                  />
-                  <br />
-                  <label htmlFor="Email">Email:</label><br />
-                  <input
-                    onChange={changeEmail}
-                    type="text"
-                    id="ba"
-                    name="mail"
-                    placeholder="Enter your mail"
-                  />
-                  <label htmlFor="password">Password:</label>
-                  <input
-                    onChange={handlePasswordChange}
-                    type="password"
-                    id="ba"
-                    name="password"
-                    placeholder="Enter your password"
-                  />
-                  {
-                    password.length > 0
-                    && (
-                      <div className="text-sm" style={{ color: strengthColor }}>
-                        Password Strength:{" "}
-                        <span
-                          className={`text-${getPasswordStrengthColor(
-                            passwordStrength
-                          )}`}
-                        >
-                          {getPasswordStrengthLabel(passwordStrength)}
-                        </span>
-                      </div>
-                    )}
-                  <label htmlFor="password">Confirm Password:</label>
-                  <input
-                    onChange={changeconfirmPassword}
-                    type="password"
-                    id="ba"
-                    name="password"
-                    placeholder="Re-Enter your password"
-                  /> <br />
-                  {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-                  {message && (
-                    <p className="text-green-500 text-sm mt-2">{message}</p>
-                  )}
-                  <button onClick={handleSubmit} type="submit" id="sub">
-                    Register
-                  </button>
-                </form>
+    <div className="main">
+      <div className="regs">
+        <div className="left" />
+        <div className="right">
+          <div className="regbox">
+            <h1>Register</h1>
+            <form onSubmit={handleSubmit}>
+              <label htmlFor="Fname">First Name:</label>
+              <input
+                onChange={changeFirstName}
+                type="text"
+                id="ba"
+                name="fname"
+                placeholder="Enter your First Name"
+              />
+              <br />
+              <label htmlFor="Lname">Last Name:</label>
+              <input
+                onChange={changeLastName}
+                type="text"
+                id="ba"
+                name="lname"
+                placeholder="Enter your Last Name"
+              />
+              <br />
+              <label htmlFor="username">User Name:</label>
+              <input
+                onChange={changeUserName}
+                type="text"
+                id="ba"
+                name="username"
+                placeholder="Enter your User Name"
+              />
+              <br />
+              <label htmlFor="email">Email:</label><br />
+              <input
+                onChange={changeEmail}
+                type="email"
+                id="ba"
+                name="email"
+                placeholder="Enter your email"
+              />
+              <label htmlFor="password">Password:</label>
+              <div className="password-container">
+                <input
+                  onChange={handlePasswordChange}
+                  type={showPassword ? "text" : "password"}
+                  id="ba"
+                  name="password"
+                  placeholder="Enter your password"
+                />
+                <span
+                  className="password-toggle"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
-            </div>
+              {password.length > 0 && (
+                <div className="text-sm">
+                  <div 
+                    className="progress-bar"
+                    style={{ width: progressBarWidth, backgroundColor: strengthColor }}
+                  />
+                  <span style={{ color: strengthColor }}>
+                    Password Strength: {getPasswordStrengthLabel(passwordStrength)}
+                  </span>
+                </div>
+              )}
+              <label htmlFor="confirmPassword">Confirm Password:</label>
+              <div className="password-container">
+                <input
+                  onChange={changeConfirmPassword}
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="ba"
+                  name="confirmPassword"
+                  placeholder="Re-Enter your password"
+                />
+                <span
+                  className="password-toggle"
+                  onClick={toggleConfirmPasswordVisibility}
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+              <br />
+              {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+              {message && <p className="text-green-500 text-sm mt-2">{message}</p>}
+              <button type="submit" id="sub">
+                Register
+              </button>
+            </form>
           </div>
         </div>
-      </body>
-    </html>
+      </div>
+    </div>
   );
 };
 

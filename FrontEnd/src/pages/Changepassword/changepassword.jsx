@@ -8,16 +8,13 @@ function ChangePassword() {
     const [currentPassword, setCurrentPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
+    const [errors, setErrors] = useState({ currentPassword: "", newPassword: "", confirmPassword: "", general: "" });
 
     const navigate = useNavigate();
 
     const handlePasswordChange = async (e) => {
         e.preventDefault();
-
-        setError("");
-        setSuccessMessage("");
+        setErrors({ currentPassword: "", newPassword: "", confirmPassword: "", general: "" });
 
         const data = {
             currentPassword,
@@ -26,10 +23,10 @@ function ChangePassword() {
         };
 
         try {
-
             const response = await updatePasswordApi(data);
 
             if (response.data.success === false) {
+                setErrors(prevErrors => ({ ...prevErrors, general: response.data.message }));
                 toast.error(response.data.message);
             } else {
                 toast.success('Password changed successfully!');
@@ -39,7 +36,14 @@ function ChangePassword() {
                 navigate('/');
             }
         } catch (error) {
-            setError("An error occurred. Please try again.");
+            console.error(error);
+            if (error.response && error.response.data && error.response.data.error) {
+                setErrors(prevErrors => ({ ...prevErrors, general: error.response.data.error }));
+                toast.error(error.response.data.error);
+            } else {
+                setErrors(prevErrors => ({ ...prevErrors, general: "An error occurred. Please try again later." }));
+                toast.error("An error occurred. Please try again later.");
+            }
         }
     };
 
@@ -55,22 +59,27 @@ function ChangePassword() {
                             <input type="password" id="currentPassword" name="currentPassword"
                                 value={currentPassword}
                                 onChange={(e) => setCurrentPassword(e.target.value)}
-                            /><br /><br />
+                            />
+                            {errors.currentPassword && <p className="error">{errors.currentPassword}</p>}
+                            <br /><br />
 
                             <label htmlFor="newPassword">Enter new password</label><br />
                             <input type="password" id="newPassword" name="newPassword"
                                 value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)} /><br /><br />
+                                onChange={(e) => setNewPassword(e.target.value)} />
+                            {errors.newPassword && <p className="error">{errors.newPassword}</p>}
+                            <br /><br />
 
                             <label htmlFor="confirmPassword">Confirm new password</label><br />
                             <input type="password" id="confirmPassword" name="confirmPassword"
                                 value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)} /><br /><br />
+                                onChange={(e) => setConfirmPassword(e.target.value)} />
+                            {errors.confirmPassword && <p className="error">{errors.confirmPassword}</p>}
+                            <br /><br />
 
                             <button type="submit" id="submit">Submit</button>
                         </form>
-                        {error && <p className="error">{error}</p>}
-                        {successMessage && <p className="success">{successMessage}</p>}
+                        {errors.general && <p className="error">{errors.general}</p>}
                     </div>
                 </div>
             </div>

@@ -1,57 +1,61 @@
 import React, { useEffect, useState } from 'react';
-import { getAuditLogsApi } from '../../apis/Api'; // Ensure this function is implemented correctly
+import { getAuditLogsApi } from '../../apis/Api';
+import '../../css/adminlogs.css'; // Ensure this CSS file exists and is correctly linked
 
 const AdminLogs = () => {
     const [logs, setLogs] = useState([]);
-    const [loading, setLoading] = useState(true); // Add loading state
-    const [error, setError] = useState(null); // Add error state
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Fetch logs with error handling
         getAuditLogsApi()
             .then((res) => {
                 setLogs(res.data.logs);
-                setLoading(false); // Set loading to false once data is fetched
+                setLoading(false);
             })
             .catch((err) => {
                 console.error('Failed to fetch logs:', err);
-                setError('Failed to load logs.'); // Set error message if the API call fails
+                setError('Failed to load logs.');
                 setLoading(false);
             });
     }, []);
 
     if (loading) {
-        return <p>Loading...</p>; // Show loading message while data is being fetched
+        return <div className="loading-container"><p className="loading-message">Loading...</p></div>;
     }
 
     if (error) {
-        return <p>{error}</p>; // Show error message if there's an error
+        return <div className="error-container"><p className="error-message">{error}</p></div>;
     }
 
     return (
-        <div className="audit-log">
-            <h2>Audit Log</h2>
+        <div className="admin-logs-container">
+            <h2 className="logs-title">Audit Log</h2>
             {logs.length === 0 ? (
-                <p>No logs available.</p> // Show message if there are no logs
+                <p className="no-logs-message">No logs available.</p>
             ) : (
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>Action</th>
-                            <th>Details</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {logs.map((log) => (
-                            <tr key={log._id}>
-                                <td>{new Date(log.timestamp).toLocaleString()}</td>
-                                <td>{log.action}</td>
-                                <td>{typeof log.details === 'object' ? JSON.stringify(log.details) : log.details}</td>
+                <div className="logs-table-container">
+                    <table className="logs-table">
+                        <thead>
+                            <tr>
+                                <th className="table-primary">Timestamp</th>
+                                <th className="table-secondary">Action</th>
+                                <th className="table-success">Details</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {logs.map((log, index) => (
+                                <tr key={log._id} className={index % 2 === 0 ? 'table-light' : 'table-dark'}>
+                                    <td>{new Date(log.timestamp).toLocaleString()}</td>
+                                    <td>{log.action}</td>
+                                    <td>
+                                        <pre>{JSON.stringify(log.details, null, 2)}</pre>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             )}
         </div>
     );

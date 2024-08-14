@@ -408,6 +408,7 @@ const User = require("../model/usermodel");
 const jwt = require("jsonwebtoken");
 const { asyncHandler } = require('../middleware/async');
 const bcrypt = require('bcrypt');
+const cloudinary = require("cloudinary");
 const logActivity = require('../utils/logActivity'); // Assuming you have a logActivity utility
 
 const createUser = async (req, res) => {
@@ -640,6 +641,9 @@ const getSingleUser = async (req, res) => {
             lastName: user.lastName,
             username: user.username,
             email: user.email,
+            location: user.location,
+            bio: user.bio,
+            userImage: user.userImageUrl,
             isUserLoggedIn: loggedInUserID === user._id.toString(),
         };
 
@@ -682,7 +686,7 @@ const updateUser = async (req, res) => {
         const { userImage } = req.files;
 
         // Validate required fields
-        if (!firstName || !lastName || !username || !email) {
+        if (!username || !email) {
             return res.status(400).json({
                 success: false,
                 message: "Required fields are missing!",

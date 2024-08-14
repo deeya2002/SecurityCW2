@@ -4,10 +4,12 @@ import { toast } from 'react-toastify';
 import { getUserProfileApi, updateUserProfileApi } from '../../apis/Api';
 
 const EditProfile = () => {
+    const user = JSON.parse(localStorage.getItem("user")) || null;
+
     const navigate = useNavigate();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState(''); // Added lastName state
-    const [userName, setUserName] = useState('');
+    const [username, setUserName] = useState('');
     const [email, setEmail] = useState('');
     const [number, setNumber] = useState('');
     const [location, setLocation] = useState('');
@@ -49,7 +51,7 @@ const EditProfile = () => {
         const formData = new FormData();
         formData.append('firstName', firstName);
         formData.append('lastName', lastName); // Append lastName to formData
-        formData.append('userName', userName);
+        formData.append('username', username);
         formData.append('email', email);
         formData.append('number', number);
         formData.append('location', location);
@@ -59,7 +61,7 @@ const EditProfile = () => {
         }
 
         try {
-            const response = await updateUserProfileApi(formData);
+            const response = await updateUserProfileApi(user?._id, formData);
             if (response.data.success) {
                 toast.success(response.data.message);
                 navigate('/profile');
@@ -109,19 +111,22 @@ const EditProfile = () => {
                         <p>{email}</p>
                     </div>
                 </div>
-                <form className="row g-3" style={styles.form} onSubmit={handleSubmit}>
-                    <div style={styles.formGroup}>
-                        <label htmlFor="fullname">Full Name</label>
+                <form className="row g-3" style={styles.formgroup} onSubmit={handleSubmit}>
+                    <div style={styles.formgroup}>
+                        <label htmlFor="fullname">First Name</label>
                         <input
-                            type="ff"
+                            type="text"
                             id="firstname"
-                            placeholder="Enter Full Name"
+                            placeholder="Enter First Name"
                             value={firstName}
                             onChange={(e) => setFirstName(e.target.value)}
                             style={styles.input}
                         />
+                    </div>
+                    <div className="column g-3" style={styles.formgroup}>
+                        <label htmlFor="fullname">Last Name</label>
                         <input
-                            type="ff"
+                            type="text"
                             id="lastname"
                             placeholder="Enter Last Name"
                             value={lastName}
@@ -129,13 +134,14 @@ const EditProfile = () => {
                             style={styles.input} // Same style for consistency
                         />
                     </div>
+
                     <div style={styles.formGroup}>
                         <label htmlFor="username">Username</label>
                         <input
                             type="text"
                             id="username"
                             placeholder="Enter Username"
-                            value={userName}
+                            value={username}
                             onChange={(e) => setUserName(e.target.value)}
                             style={styles.input}
                         />
@@ -253,6 +259,10 @@ const styles = {
     },
     formGroup: {
         flex: '1 1 300px',
+    },
+
+    formgroup: {
+        flex: '1 1 100px',
     },
     input: {
         width: '100%',

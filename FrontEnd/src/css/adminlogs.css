@@ -1,0 +1,82 @@
+/* Table Styles */
+.logs-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.logs-table th,
+.logs-table td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.logs-table th {
+    background-color: #f4f4f4;
+}
+
+.table-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.table-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.table-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.table-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.table-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+.table-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.table-light {
+    background-color: #f8f9fa;
+}
+
+.table-dark {
+    background-color: #343a40;
+    color: white;
+}
+
+/* Loading and Error Styles */
+.loading-container,
+.error-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.loading-message,
+.error-message {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Additional Container Styles */
+.admin-logs-container {
+    padding: 20px;
+}
+
+.logs-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.no-logs-message {
+    font-size: 18px;
+}

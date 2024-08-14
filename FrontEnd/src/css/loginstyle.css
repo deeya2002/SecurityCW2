@@ -111,3 +111,12 @@ div.gue_link {
   text-decoration: none;
   /* Remove underline */
 }
+
+.progress-bar {
+  height: 5px;
+  border-radius: 3px;
+  margin: 10px 0;
+  transition: width 0.3s ease;
+}
+
+
