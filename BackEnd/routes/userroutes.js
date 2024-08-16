@@ -7,15 +7,65 @@ const { upload } = require('../middleware/uploads.js');
 
 //all the routes for the user
 //register the user
-router.post('/create', userController.createUser);
+router
+.route('/create')
+.post(userController.createUser)
 
-router.post('/verify-email', userController.verifyEmail);
+.get((req,res,next)=>{
+  res.status(405).json({error: "GET request is accepted!"});
+})
+.put((req,res,next)=>{
+  res.status(405).json({error: "PUT request is accepted!"});
+})
+.delete((req,res,next)=>{
+  res.status(405).json({error: "DELETE request is accepted!"});
+});
+
+//verify email
+router
+.route('/verify-email')
+.post(userController.verifyEmail)
+
+.get((req,res,next)=>{
+  res.status(405).json({error: "GET request is accepted!"});
+})
+.put((req,res,next)=>{
+  res.status(405).json({error: "PUT request is accepted!"});
+})
+.delete((req,res,next)=>{
+  res.status(405).json({error: "DELETE request is accepted!"});
+});
 
 //login the user
-router.post('/login', userController.loginUser);
+router
+.route('/login')
+.post(userController.loginUser)
+
+.get((req,res,next)=>{
+  res.status(405).json({error: "GET request is accepted!"});
+})
+.put((req,res,next)=>{
+  res.status(405).json({error: "PUT request is accepted!"});
+})
+.delete((req,res,next)=>{
+  res.status(405).json({error: "DELETE request is accepted!"});
+});
 
 //logout the user
-router.post('/logout', userController.logoutUser);
+router
+.route('/logout')
+.post(userController.logoutUser)
+
+.get((req,res,next)=>{
+  res.status(405).json({error: "GET request is accepted!"});
+})
+.put((req,res,next)=>{
+  res.status(405).json({error: "PUT request is accepted!"});
+})
+.delete((req,res,next)=>{
+  res.status(405).json({error: "DELETE request is accepted!"});
+});
+
 
 router.put('/updateuser/:id', authGuard, userController.updateUser);
 
@@ -25,7 +75,20 @@ router.get('/profile', authGuard, userController.getSingleUser);
 // Update password
 router.put("/change-password", authGuard, userController.updatePassword);
 
-router.post("/uploadImage", upload, userController.uploadImage);
+router
+.route('/uploadImage')
+.post(upload,userController.uploadImage)
+
+.get((req,res,next)=>{
+  res.status(405).json({error: "GET request is accepted!"});
+})
+.put((req,res,next)=>{
+  res.status(405).json({error: "PUT request is accepted!"});
+})
+.delete((req,res,next)=>{
+  res.status(405).json({error: "DELETE request is accepted!"});
+});
+
 
 // Password recovery routes
 router.post(

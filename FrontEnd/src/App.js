@@ -12,7 +12,7 @@ import Homepage from './pages/Homepage';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Footer from './components/Footer';
-import Khalti from './components/khalti/Khalti';
+// import Khalti from './components/khalti/Khalti';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminEditFood from './pages/admin/AdminEditFood';
 import AdminOrderList from './pages/admin/AdminOrderList';
@@ -84,7 +84,7 @@ function App() {
         <Route path='/descriptionpage/:_id' element={<DescriptionPage />} />
         <Route path='/cart' element={<Cart />} />
         <Route path='/userorderlist' element={<OrderList />} />
-        <Route path='/payment' element={<Khalti />} />
+        {/* <Route path='/payment' element={<Khalti />} /> */}
         <Route path='/review' element={<Review />} />
         <Route path='/reviewlist' element={<ReviewComponent />} />
         <Route path="/changePassword" element={<ChangePassword />} />
