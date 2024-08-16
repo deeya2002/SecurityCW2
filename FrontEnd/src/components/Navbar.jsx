@@ -81,16 +81,19 @@ const Navbar = ({ size, setShow }) => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link className="nav-link" to="/">
-                  Home
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/restaurant">
-                  Restaurant
-                </Link>
-              </li>
+              {user && user.userType === "user" ? (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/">
+                    Home
+                  </Link>
+                </li>) : null}
+              {user && user.userType === "user" ? (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/restaurant">
+                    Restaurant
+                  </Link>
+                </li>
+              ) : null}
               {user && user.userType === "admin" ? (
                 <li className="nav-item">
                   <Link className="nav-link" to="/admin/restaurant">
@@ -129,7 +132,7 @@ const Navbar = ({ size, setShow }) => {
               {user && user.userType === "admin" ? (
                 <li className="nav-item">
                   <Link className="nav-link" to="/admin/logs">
-                  Logs
+                    Logs
                   </Link>
                 </li>
               ) : null}

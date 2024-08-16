@@ -75,6 +75,19 @@ const userSchema = new Schema({
         default: "user",
         required: true,
     },
+    // Phone verification fields
+    emailVerificationToken: {
+        type: String,
+        default: null,
+    },
+    phoneVerificationExpires: {
+        type: Date,
+        default: null,
+    },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    }
 });
 
 // Sign JWT and return
@@ -96,7 +109,7 @@ userSchema.methods.getResetPasswordToken = function () {
 
     // Hash token and set to resetPasswordToken field
     this.resetPasswordToken = crypto
-        .createHash("diy234")
+        .createHash("sha256")
         .update(resetToken)
         .digest("hex");
 
@@ -104,6 +117,34 @@ userSchema.methods.getResetPasswordToken = function () {
     this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
     return resetToken;
+};
+
+// Generate and hash email verification token
+userSchema.methods.generateEmailVerificationToken = function () {
+    const verificationToken = crypto.randomBytes(32).toString("hex");
+
+    this.verificationToken = crypto
+        .createHash("sha256")
+        .update(verificationToken)
+        .digest("hex");
+
+    this.tokenExpiration = Date.now() + 1 * 60 * 60 * 1000; // 1 hour expiration
+
+    return verificationToken;
+};
+
+// Generate and hash phone verification token
+userSchema.methods.generatePhoneVerificationToken = function () {
+    const verificationToken = crypto.randomBytes(4).toString("hex"); // 4 bytes is 8 hex chars, e.g., "abc12345"
+
+    this.phoneVerificationToken = crypto
+        .createHash("sha256")
+        .update(verificationToken)
+        .digest("hex");
+
+    this.phoneVerificationExpires = Date.now() + 10 * 60 * 1000; // 10 minutes expiration
+
+    return verificationToken;
 };
 
 module.exports = mongoose.model('users', userSchema);

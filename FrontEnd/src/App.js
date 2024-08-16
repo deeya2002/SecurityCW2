@@ -34,6 +34,22 @@ import ReviewComponent from './pages/Review/Reviews';
 import AdminRoutes from './protected_routes/AdminRoutes';
 import  AdminLogs  from './pages/admin/AdminLogs';
 
+// const PrivateRoute = ({ children, isAdmin }) => {
+//   const token = localStorage.getItem('token');
+//   const user = JSON.parse(localStorage.getItem('user'));
+
+//   if (!token) {
+//       return <Navigate to="/auth?mode=login" />;
+//   }
+//   if (isAdmin && user && !user.isAdmin) {
+//       return <Navigate to="/user/dashboard" />;
+//   }
+//   if (!isAdmin && user && user.isAdmin) {
+//       return <Navigate to="/admin/dashboard" />;
+//   }
+//   return children;
+// };
+
 function App() {
   const DisplayNavbar = () => {
     const location = useLocation();

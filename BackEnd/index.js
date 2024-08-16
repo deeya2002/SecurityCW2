@@ -8,6 +8,8 @@ const cloudinary = require('cloudinary');
 const { authGuard } = require('./middleware/authGuard');
 const logoutRouter = require('./controllers/usercontrollers');
 
+const twilio = require('twilio');
+
 // making express app
 const app = express();
 
@@ -34,6 +36,7 @@ app.use(cors(corsOptions))
 //connect to database
 connectToDB();
 
+
 //Accepting json data
 app.use(express.json());
 
@@ -45,6 +48,7 @@ app.get("/test", (req, res) => {
 
 //defining routes
 app.use('/api/user', require('./routes/userroutes'));
+
 
 //create route for menus
 app.use('/api/menu', require('./routes/menuRoutes'));

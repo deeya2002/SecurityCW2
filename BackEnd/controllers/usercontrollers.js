@@ -409,7 +409,21 @@ const jwt = require("jsonwebtoken");
 const { asyncHandler } = require('../middleware/async');
 const bcrypt = require('bcrypt');
 const cloudinary = require("cloudinary");
-const logActivity = require('../utils/logActivity'); // Assuming you have a logActivity utility
+const logActivity = require('../utils/logActivity');
+const nodemailer = require('nodemailer');
+
+require('dotenv').config();
+
+const generateVerificationCode = () => Math.floor(1000 + Math.random() * 9000);
+
+// Create a Nodemailer transporter
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.USEREMAIL,
+        pass: process.env.PASSWORD,
+    },
+});
 
 const createUser = async (req, res) => {
     // Step 1: Check if data is coming or not
@@ -422,43 +436,45 @@ const createUser = async (req, res) => {
     if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
         return res.status(400).json({
             success: false,
-            message: "Please enter all the fields."
+            message: "All fields are required."
         });
     }
 
     // Email Validation: Check if the email is in a valid format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-        return res.status(400).json({ error: "Invalid email format" });
+        return res.status(400).json({ success: false, message: "Invalid email format." });
     }
 
     // Password Complexity: Require passwords to include a combination of Uppercase letters, Lowercase letters, Numbers, Special characters
-    const passwordRegex =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
     if (!passwordRegex.test(password)) {
         return res.status(400).json({
-            error: "Password must include a combination of: Uppercase letters, Lowercase letters, Numbers, Special characters (e.g.,!, @, #, $)"
+            success: false,
+            message: "Password must include Uppercase letters, Lowercase letters, Numbers, and Special characters (e.g., !, @, #, $)."
         });
     }
 
     const minPasswordLength = 8;
     if (password.length < minPasswordLength) {
         return res.status(400).json({
-            error: `Password length must be at least ${minPasswordLength} characters`
+            success: false,
+            message: `Password length must be at least ${minPasswordLength} characters.`
         });
     }
 
     // Confirm Password Validation: Check if the passwords match
     if (password !== confirmPassword) {
         return res.status(400).json({
-            error: "Passwords do not match."
+            success: false,
+            message: "Passwords do not match."
         });
     }
 
     // Step 4: Try-catch block
     try {
         // Step 5: Check existing user
-        const existingUserByEmail = await User.findOne({ email: email });
+        const existingUserByEmail = await User.findOne({ email });
         if (existingUserByEmail) {
             return res.status(400).json({
                 success: false,
@@ -466,7 +482,7 @@ const createUser = async (req, res) => {
             });
         }
 
-        const existingUserByUsername = await User.findOne({ username: username });
+        const existingUserByUsername = await User.findOne({ username });
         if (existingUserByUsername) {
             return res.status(400).json({
                 success: false,
@@ -475,23 +491,44 @@ const createUser = async (req, res) => {
         }
 
         // Password encryption
-        const randomSalt = await bcrypt.genSalt(10);
-        const encryptedPassword = await bcrypt.hash(password, randomSalt);
+        const encryptedPassword = await bcrypt.hash(password, 10);
+
+        // Generate and store verification code
+        const verificationCode = generateVerificationCode();
+
+        // Send verification code via email
+        try {
+            const mailOptions = {
+                from: process.env.USEREMAIL,
+                to: email,
+                subject: 'Email Verification Code',
+                text: `Your verification code is ${verificationCode}`,
+            };
+
+            await transporter.sendMail(mailOptions);
+
+        } catch (emailError) {
+            console.error('Failed to send email:', emailError.message);
+            return res.status(500).json({
+                success: false,
+                message: "Failed to send verification code. Please try again."
+            });
+        }
 
         // Step 6: Create new user
         const newUser = new User({
-            firstName: firstName,
-            lastName: lastName,
-            username: username,
-            email: email,
+            firstName,
+            lastName,
+            username,
+            email,
             password: encryptedPassword,
-            confirmPassword: encryptedPassword,
-
+            confirmPassword:encryptedPassword,
+            emailVerificationToken: verificationCode,
+            isVerified: false
         });
 
         // Update password history for the newly registered user
         newUser.passwordHistory = [encryptedPassword];
-        // Trim the password history to a specific depth (e.g., last 5 passwords)
         const passwordHistoryDepth = 5;
         newUser.passwordHistory = newUser.passwordHistory.slice(-passwordHistoryDepth);
 
@@ -499,14 +536,18 @@ const createUser = async (req, res) => {
         await newUser.save();
         res.status(201).json({
             success: true,
-            message: "User created successfully."
+            message: "User created successfully. Please verify your email."
         });
 
     } catch (error) {
-        console.log(error);
-        res.status(500).json("Server Error");
+        console.error('Server Error:', error.message);
+        res.status(500).json({
+            success: false,
+            message: "Server Error. Please try again later."
+        });
     }
 };
+
 
 const loginUser = async (req, res) => {
     // Step 1: Check incoming data

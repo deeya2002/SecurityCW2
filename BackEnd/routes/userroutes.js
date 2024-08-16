@@ -1,11 +1,9 @@
 //import router from express
 const router = require('express').Router();
 const userController = require('../controllers/usercontrollers.js');
+const passwordRecoveryController = require('../controllers/forgetpasswordControllers.js')
 const { authGuard } = require('../middleware/authGuard.js');
 const { upload } = require('../middleware/uploads.js');
-const passwordRecoveryController = require('../controllers/forgetpasswordControllers.js');
-
-
 
 //all the routes for the user
 //register the user
