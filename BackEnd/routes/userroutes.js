@@ -9,6 +9,8 @@ const { upload } = require('../middleware/uploads.js');
 //register the user
 router.post('/create', userController.createUser);
 
+router.post('/verify-email', userController.verifyEmail);
+
 //login the user
 router.post('/login', userController.loginUser);
 

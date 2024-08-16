@@ -21,6 +21,10 @@ export const testApi = () => Api.get('/test');
 //  Creating register api
 export const registerApi = data => Api.post('/api/user/create', data);
 
+export const verifyCodeApi = (data) => {
+  return axios.post('/api/user/verify-email', data);
+};
+
 // Create login api
 export const loginApi = data => Api.post('/api/user/login', data);
 

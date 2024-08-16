@@ -80,10 +80,6 @@ const userSchema = new Schema({
         type: String,
         default: null,
     },
-    phoneVerificationExpires: {
-        type: Date,
-        default: null,
-    },
     isVerified: {
         type: Boolean,
         default: false,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import zxcvbn from "zxcvbn";
-import { registerApi } from '../../apis/Api';
+import { registerApi, verifyCodeApi } from '../../apis/Api';
 import '../../css/regstyle.css';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 
@@ -14,10 +14,14 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState("");
-  const [message] = useState("");
+  const [message, setMessage] = useState("");
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showVerificationPopup, setShowVerificationPopup] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [verificationError, setVerificationError] = useState('');
+  const [verificationMessage, setVerificationMessage] = useState('');
   const navigate = useNavigate();
 
   const changeFirstName = e => setFirstName(e.target.value);
@@ -25,6 +29,30 @@ const Register = () => {
   const changeUserName = e => setUserName(e.target.value);
   const changeEmail = e => setEmail(e.target.value);
   const changeConfirmPassword = e => setConfirmPassword(e.target.value);
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    const passwordScore = zxcvbn(e.target.value);
+    setPasswordStrength(passwordScore.score);
+  };
+
+  const handleVerificationCodeChange = (e) => setVerificationCode(e.target.value);
+
+  const handleVerificationSubmit = (e) => {
+    e.preventDefault();
+    verifyCodeApi({ email, code: verificationCode })
+      .then(res => {
+        if (res.data.success) {
+          toast.success("Email verified successfully!");
+          navigate('/login');
+        } else {
+          setVerificationError(res.data.message);
+        }
+      })
+      .catch(error => {
+        setVerificationError("An error occurred. Please try again.");
+      });
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -50,8 +78,8 @@ const Register = () => {
     registerApi(data)
       .then(res => {
         if (res.data.success === true) {
-          toast.success(res.data.message);
-          navigate('/login');
+          toast.info("Registration successful! Please verify your email.");
+          setShowVerificationPopup(true);
         } else {
           setError(res.data.message);
         }
@@ -97,12 +125,6 @@ const Register = () => {
       default:
         return "";
     }
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    const passwordScore = zxcvbn(e.target.value);
-    setPasswordStrength(passwordScore.score);
   };
 
   const strengthColor = getPasswordStrengthColor(passwordStrength);
@@ -207,6 +229,27 @@ const Register = () => {
           </div>
         </div>
       </div>
+
+      {/* Verification Popup */}
+      {showVerificationPopup && (
+        <div className="verification-popup">
+          <h2>Verify Your Email</h2>
+          <form onSubmit={handleVerificationSubmit}>
+            <label htmlFor="verificationCode">Enter the 4-digit code sent to your email:</label>
+            <input
+              type="text"
+              id="verificationCode"
+              value={verificationCode}
+              onChange={handleVerificationCodeChange}
+              placeholder="4-digit code"
+            />
+            <br />
+            {verificationError && <p className="text-red-500 text-sm mt-2">{verificationError}</p>}
+            {verificationMessage && <p className="text-green-500 text-sm mt-2">{verificationMessage}</p>}
+            <button type="submit">Verify</button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

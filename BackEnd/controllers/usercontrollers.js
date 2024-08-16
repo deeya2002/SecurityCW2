@@ -548,6 +548,55 @@ const createUser = async (req, res) => {
     }
 };
 
+const verifyEmail = async (req, res) => {
+    const { email, verificationCode } = req.body;
+
+    // Step 1: Validate input
+    if (!email || !verificationCode) {
+        return res.status(400).json({
+            success: false,
+            message: "Email and verification code are required."
+        });
+    }
+
+    try {
+        // Step 2: Find user by email
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "User not found."
+            });
+        }
+
+        // Step 3: Check if the verification code matches
+        if (user.emailVerificationToken !== verificationCode) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid verification code."
+            });
+        }
+
+        // Step 4: Mark user as verified
+        user.isVerified = true;
+        user.emailVerificationToken = null; // Clear the token after successful verification
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Email verified successfully. You can now log in."
+        });
+
+    } catch (error) {
+        console.error('Server Error:', error.message);
+        res.status(500).json({
+            success: false,
+            message: "Server Error. Please try again later."
+        });
+    }
+};
+
 
 const loginUser = async (req, res) => {
     // Step 1: Check incoming data
@@ -920,6 +969,7 @@ const logoutUser = (req, res) => {
 
 module.exports = {
     createUser,
+    verifyEmail,
     loginUser,
     getSingleUser,
     updateUser,
