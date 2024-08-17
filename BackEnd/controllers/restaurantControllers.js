@@ -68,11 +68,6 @@ const getAllRestaurants = async (req, res) => {
 
         const skip = (page - 1) * limit;
 
-
-
-        // Calculate skip value based on the page and limit
-        // const skip = (page - 1) * limit;
-
         // Fetch foods with pagination
         const restaurants = await Restaurants.find({}).skip(skip).limit(limit);
 
