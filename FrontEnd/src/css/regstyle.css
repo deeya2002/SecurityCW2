@@ -30,7 +30,7 @@ div.main {
 
 div.regs {
     width: 50%;
-    height: 560px;
+    height: 600px;
     background: #fff;
     margin: 0 auto;
     border: 1px solid gainsboro;
@@ -42,7 +42,7 @@ div.regs .left {
     float: left;
     background: url('../../public/assets/images/28142325.png');
     width: 45%;
-    height: 560px;
+    height: 600px;
     background-size: cover;
     box-sizing: border-box;
     border-radius: 30px;

@@ -18,6 +18,7 @@ const Register = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordFeedback, setPasswordFeedback] = useState("");
   const navigate = useNavigate();
 
   const changeFirstName = e => setFirstName(e.target.value);
@@ -26,9 +27,38 @@ const Register = () => {
   const changeEmail = e => setEmail(e.target.value);
   const changeConfirmPassword = e => setConfirmPassword(e.target.value);
 
+  const handlePasswordChange = (e) => {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    const passwordScore = zxcvbn(newPassword);
+    setPasswordStrength(passwordScore.score);
+
+    // Check password length and complexity
+    if (newPassword.length < 8) {
+      setPasswordFeedback("Password is too short (minimum 8 characters).");
+    } else if (!/[A-Z]/.test(newPassword)) {
+      setPasswordFeedback("Password should include at least one uppercase letter.");
+    } else if (!/[a-z]/.test(newPassword)) {
+      setPasswordFeedback("Password should include at least one lowercase letter.");
+    } else if (!/[0-9]/.test(newPassword)) {
+      setPasswordFeedback("Password should include at least one number.");
+    } else if (!/[!@#$%^&*]/.test(newPassword)) {
+      setPasswordFeedback("Password should include at least one special character.");
+    } else {
+      setPasswordFeedback("");
+    }
+  };
+
   const handleSubmit = e => {
     e.preventDefault();
     setError("");
+
+    if (passwordFeedback) {
+      setError(passwordFeedback);
+      return;
+    }
+
 
     const passwordScore = zxcvbn(password);
     setPasswordStrength(passwordScore.score);
@@ -101,12 +131,7 @@ const Register = () => {
     }
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    const passwordScore = zxcvbn(e.target.value);
-    setPasswordStrength(passwordScore.score);
-  };
-
+ 
   const strengthColor = getPasswordStrengthColor(passwordStrength);
   const progressBarWidth = `${(passwordStrength + 1) * 20}%`;
 
@@ -199,7 +224,6 @@ const Register = () => {
                   {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                 </span>
               </div>
-              <br />
               {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
               {message && <p className="text-green-500 text-sm mt-2">{message}</p>}
               <button type="submit" id="sub">
