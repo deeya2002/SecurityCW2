@@ -49,8 +49,6 @@ const authGuardAdmin = (req, res, next) => {
         });
     }
 
-    // Split auth header and get token
-    // Format: 'Bearer ghfdrgthyuhgvfghjkiujhghjuhjg'
     const token = authHeader.split(' ')[1];
     if (!token) {
         return res.json({
