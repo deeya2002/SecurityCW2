@@ -36,7 +36,7 @@ app.use(cors(corsOptions))
 //connect to database
 connectToDB();
 
-
+ 
 //Accepting json data
 app.use(express.json());
 
