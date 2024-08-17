@@ -15,7 +15,7 @@ const VerificationPopup = ({ onClose, onVerified }) => {
       .then(res => {
         if (res.data.success) {
           toast.success(res.data.message);
-          onVerified(); // Call the onVerified function to proceed to login
+          onVerified(); 
         } else {
           setError(res.data.message);
         }
