@@ -3,7 +3,7 @@ const AuditLog = require("../model/auditlogModel");
 // Function to get all audit logs
 async function getAllAuditLogs() {
     try {
-        const logs = await AuditLog.find(); // Retrieves all logs
+        const logs = await AuditLog.find();
         return logs;
     } catch (err) {
         console.error('Error retrieving audit logs:', err);
@@ -14,7 +14,7 @@ async function getAllAuditLogs() {
 // Function to get audit logs by userId
 async function getAuditLogsByUserId(userId) {
     try {
-        const logs = await AuditLog.find({ userId: userId }); // Retrieves logs for a specific user
+        const logs = await AuditLog.find({ userId: userId }); 
         return logs;
     } catch (err) {
         console.error('Error retrieving audit logs by user ID:', err);
