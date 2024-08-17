@@ -624,7 +624,7 @@ const loginUser = async (req, res) => {
             const lockoutDurationMillis = Date.now() - user.lastFailedLoginAttempt;
             const lockoutDurationSeconds = lockoutDurationMillis / 1000; // convert to seconds
 
-            if (lockoutDurationSeconds >= 120) { // 2 minutes in seconds
+            if (lockoutDurationSeconds >= 180) { 
                 // Unlock the account
                 user.accountLocked = false;
                 user.failedLoginAttempts = 0;
@@ -645,12 +645,10 @@ const loginUser = async (req, res) => {
         // Compare password
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            // Increment failed login attempts and update last failed login timestamp
             user.failedLoginAttempts += 1;
             user.lastFailedLoginAttempt = Date.now();
 
-            // Check if the maximum allowed failed attempts is reached
-            if (user.failedLoginAttempts >= 4) {
+            if (user.failedLoginAttempts >= 5) {
                 // Lock the account
                 user.accountLocked = true;
                 await user.save();
@@ -712,6 +710,33 @@ const loginUser = async (req, res) => {
         });
     }
 };
+
+const checkPasswordExpiry = (user) => {
+    const passwordExpiryDays = 90; // Set the password expiry duration in days
+    const currentDate = new Date();
+    const lastPasswordChangeDate = user.passwordChangeDate || user.createdAt;
+  
+    const daysSinceLastChange = Math.floor(
+      (currentDate - lastPasswordChangeDate) / (1000 * 60 * 60 * 24)
+    );
+  
+    const daysRemaining = passwordExpiryDays - daysSinceLastChange;
+  
+    if (daysRemaining <= 3 && daysRemaining > 0) {
+      const message = `Your password will expire in ${daysRemaining} days. Please change your password.`;
+      return {
+        expired: false,
+        daysRemaining: daysRemaining,
+        message: message,
+      };
+    }
+  
+    return {
+      expired: daysSinceLastChange >= passwordExpiryDays,
+      daysRemaining: daysRemaining,
+      message: null,
+    };
+  };
 
 const getSingleUser = async (req, res) => {
     try {
@@ -975,5 +1000,6 @@ module.exports = {
     updateUser,
     updatePassword,
     uploadImage,
-    logoutUser
+    logoutUser,
+    checkPasswordExpiry
 };

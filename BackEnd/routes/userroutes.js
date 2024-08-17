@@ -91,16 +91,43 @@ router
 
 
 // Password recovery routes
-router.post(
-  "/password-recovery/request-password-reset",
-  passwordRecoveryController.requestPasswordReset
-);
+router
+.route("/password-recovery/request-password-reset")
+.post(  passwordRecoveryController.requestPasswordReset)
+.get((req,res,next)=>{
+  res.status(405).json({error: "GET request is accepted!"});
+})
+.put((req,res,next)=>{
+  res.status(405).json({error: "PUT request is accepted!"});
+})
+.delete((req,res,next)=>{
+  res.status(405).json({error: "DELETE request is accepted!"});
+});
 // Route to verify the reset token
-router.post('/password-recovery/verify-reset-token', passwordRecoveryController.verifyResetToken);
-router.post(
-  "/password-recovery/reset-password",
-  passwordRecoveryController.resetPassword
-);
+router
+.route('/password-recovery/verify-reset-token')
+.post(passwordRecoveryController.verifyResetToken)
+.get((req,res,next)=>{
+  res.status(405).json({error: "GET request is accepted!"});
+})
+.put((req,res,next)=>{
+  res.status(405).json({error: "PUT request is accepted!"});
+})
+.delete((req,res,next)=>{
+  res.status(405).json({error: "DELETE request is accepted!"});
+});
 
+router
+.route("/password-recovery/reset-password")
+.post(passwordRecoveryController.resetPassword)
+.get((req,res,next)=>{
+  res.status(405).json({error: "GET request is accepted!"});
+})
+.put((req,res,next)=>{
+  res.status(405).json({error: "PUT request is accepted!"});
+})
+.delete((req,res,next)=>{
+  res.status(405).json({error: "DELETE request is accepted!"});
+});
 //export
 module.exports = router;
