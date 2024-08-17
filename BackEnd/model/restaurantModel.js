@@ -14,21 +14,6 @@ const restaurantSchema = new mongoose.Schema({
         default: 0,
     },
     restaurantReview: [{
-        // user: {
-        //     type: mongoose.Schema.Types.ObjectId,
-        //     ref: 'User',
-        // },
-        // rating: {
-        //     type: Number,
-        // },
-        // comment: {
-        //     type: String,
-        //     trim: true,
-        // },
-        // createdAt: {
-        //     type: Date,
-        //     default: Date.now(),
-        // },
         type: String,
     }],
     restaurantImageUrl: {
