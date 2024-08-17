@@ -75,7 +75,7 @@ const userSchema = new Schema({
         default: "user",
         required: true,
     },
-    // Phone verification fields
+    // email verification fields
     emailVerificationToken: {
         type: String,
         default: null,
